@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:400,700');
+
+html,body {
+    height: 100%;
+    background: #222;
+    color: #eaeeff;
+    font-family: 'Lato', sans-serif;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+#__nuxt {
+    height: 100%;
+}
+
+h1, h2, h3, h4, h5, .fancy-text {
+    font-family: 'Raleway', sans-serif;
+}
+article h1, article h2, article h3, article h4, article h5 {
+    color: #8597bf;
+}
+
+article h1, article h2, article h3 {
+    border-bottom: 1px solid #5555bf;
+}
+
+.toasted-container.top-right {
+    top: 1em !important;
+}
+
+.page-enter-active, .page-leave-active {
+    transition: opacity .2s, transform .2s;
+}
+.page-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+label, legend {
+    font-weight: bold;
+}
+
+
+.text-sm {
+    font-size: .7em;
+}
+.text-xs {
+    font-size: .5em;
+}
+
+
+.form-control {
+    border-radius: 0;
+}
+.form-control:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    border-color: #183e98;
+    transition: all .2s;
+}
+
+
+input[disabled] {
+    background: #fbfbfd !important;
+}
+
+a {
+    color: #3865de;
+    transition: all .2s;
+}
+a:hover {
+    color: #4373fb;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+.btn {
+    color: #fff;
+    border-radius: 0;
+    transition: all .2s;
+}
+.btn.btn-warning {
+    color: #333 !important;
+}
+.btn:hover {
+    text-shadow: none;
+}
+
+.input-group-text {
+    border-radius: 0 !important;
+}
+
+/* Unselectable */
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
+    cursor: default;
+}
+.full-select {
+    -webkit-touch-callout: default; /* iOS Safari */
+    -webkit-user-select: text; /* Chrome/Safari/Opera */
+    -khtml-user-select: text; /* Konqueror */
+    -moz-user-select: text; /* Firefox */
+    -ms-user-select: text; /* Internet Explorer/Edge */
+    user-select: text; /* Non-prefixed version, currently
+                                  not supported by any browser */
+    cursor: text;
+}
+
+
+.scrollable {
+    overflow: auto;
+}
+.scrollable::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+.scrollable::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, .05);
+}
+.scrollable::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: 0 0 8px rgba(150,150,150,0.2);
+    background: rgba(29, 69, 191, 0.88);
+}
+
+::selection {
+    background: rgba(208, 154, 163, 0.45);
+}
