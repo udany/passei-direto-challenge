@@ -9,7 +9,6 @@
 <style>
     .square{
         width: 100%;
-        background: #2b3474;
         position: relative;
     }
     .square:before{
