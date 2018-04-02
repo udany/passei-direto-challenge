@@ -13,15 +13,42 @@
 
         <b-row class="mt-4">
             <b-col md="6">
-                <simple-cover image="/mock/collection/0.jpg"></simple-cover>
+                <!-- Main Info -->
+
+                <b-form-group label="Album Title:">
+                    <b-form-input
+                            value="Back to Black"
+                            placeholder="Title">
+                    </b-form-input>
+                </b-form-group>
+
+
+                <b-form-group label="Album Artist:">
+                    <b-form-input
+                            value="Amy Winehouse"
+                            placeholder="Artist">
+                    </b-form-input>
+                </b-form-group>
+
+                <b-form-group label="Album Cover:">
+
+                    <b-row>
+                        <b-col cols="6">
+                            <simple-cover image="/mock/album/1.jpg"></simple-cover>
+                        </b-col>
+                        <b-col>
+                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"></file-uploader>
+
+                            <p class="text-center text-muted mt-2">
+                                You may drag a file to the button
+                            </p>
+                        </b-col>
+                    </b-row>
+
+                </b-form-group>
             </b-col>
             <b-col md="6">
-                <h1>
-                    Back to Black
-                </h1>
-                <h4>
-                    Amy Winehouse
-                </h4>
+                <b>Tracks:</b>
 
                 <!-- Tracks -->
                 <table class="table">
@@ -30,15 +57,13 @@
                             <th style="width: 25px">
                                 #
                             </th>
-                            <th style="width: 25px">
-                                &nbsp;
-                            </th>
                             <th>
                                 Title
                             </th>
                             <th style="width: 25px" class="text-right">
                                 <i class="fa fa-clock-o"></i>
                             </th>
+                            <th style="width: 25px">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,22 +71,25 @@
                             <td>
                                 1
                             </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
-                            </td>
                             <td>
                                 Rehab
                             </td>
                             <td>
                                 3:34
                             </td>
+                            <td class="text-center">
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                &nbsp;
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>
                                 2
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
                             </td>
                             <td>
                                 You Know I'm No Good
@@ -69,13 +97,19 @@
                             <td>
                                 4:17
                             </td>
+                            <td class="text-center">
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                &nbsp;
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>
                                 3
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
                             </td>
                             <td>
                                 Me & Mr Jones
@@ -83,19 +117,34 @@
                             <td>
                                 2:32
                             </td>
+                            <td class="text-center">
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                &nbsp;
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>
                                 4
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
                             </td>
                             <td>
                                 Just Friends
                             </td>
                             <td>
                                 3:12
+                            </td>
+                            <td class="text-center">
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                &nbsp;
+                                <a href="#" @click.prevent="" class="color-neutral">
+                                    <i class="fa fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -108,6 +157,7 @@
 <script>
     import SimpleCover from '~/components/SimpleCover.vue'
     import AlbumCover from '~/components/AlbumCover.vue'
+    import FileUploader from '~/components/FileUploader.vue'
 
     export default {
         head: () => ({
@@ -126,7 +176,8 @@
         },
         components: {
             SimpleCover,
-            AlbumCover
+            AlbumCover,
+            FileUploader
         }
     }
 </script>

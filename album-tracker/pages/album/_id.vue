@@ -3,6 +3,11 @@
         <b-row>
             <b-col>
                 <h4 class="mb-0 mt-4">
+                    <a href="#" class="color-neutral float-right" @click.prevent="edit">
+                        <i class="fa fa-pencil"></i>
+                        Edit
+                    </a>
+
                     <a href="#" class="color-neutral" @click.prevent="back">
                         <i class="fa fa-chevron-left"></i>
                         Back
@@ -122,6 +127,9 @@
         methods: {
             back() {
                 this.$router.go(-1);
+            },
+            edit() {
+                this.$router.push(`/album/edit/${this.$route.params.id}`);
             },
             play() {
 
