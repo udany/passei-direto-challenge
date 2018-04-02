@@ -14,7 +14,7 @@
                 <div class="container content pb-0 pt-5 pb-md-5">
                     <b-row>
                         <b-col lg="2" md="3">
-                            <square style="background-image: url(/mock/collection/0.jpg)"></square>
+                            <simple-cover image="/mock/collection/0.jpg"></simple-cover>
                         </b-col>
                         <b-col>
                             <h1 class="mt-4 mt-md-0 ">Chill Mix</h1>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-    import Square from '~/components/Square.vue'
+    import SimpleCover from '~/components/SimpleCover.vue'
     import AlbumCover from '~/components/AlbumCover.vue'
 
     export default {
@@ -64,7 +64,7 @@
             }
         },
         components: {
-            Square,
+            SimpleCover,
             AlbumCover
         }
     }
@@ -101,10 +101,7 @@
     .collection-header .content p {
         color: #ccd3d8;
     }
-    .collection-header .content .square {
-        background-color: #000;
-        background-size: cover;
-        background-position: center center;
+    .collection-header .content .simple-cover {
         box-shadow: 0 0 30px rgba(0, 0, 0, .4);
     }
 
