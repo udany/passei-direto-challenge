@@ -200,7 +200,6 @@
         },
         mounted: function () {
             this.id = (new Emitter()).GetUId();
-        },
-        template: ""
+        }
     }
 </script>

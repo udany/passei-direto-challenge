@@ -1,2 +1,2 @@
-# passei-direto-challenge
-Desafio de programação da Passei Direto
+# Album Tracker
+Simple Nuxt.js / Express app for demonstration purposes.

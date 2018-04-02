@@ -26,8 +26,7 @@
             </b-col>
         </b-row>
 
-        <div class="container">
-
+        <div class="container mt-4">
             <b-row>
                 <b-col md="3" cols="6" class="mt-4">
                     <album-cover :id="0" title="Appetite for Destruction" artist="Guns 'n Roses"></album-cover>
@@ -42,7 +41,6 @@
                     <album-cover :id="3" title="Jinsei × Boku" artist="ONE OK ROCK"></album-cover>
                 </b-col>
             </b-row>
-
         </div>
     </div>
 </template>
@@ -91,7 +89,7 @@
         filter: blur(10px);
     }
 
-    .collection-header .content {
+    .collection-header > .content {
         position: relative;
     }
     .collection-header .content > * {

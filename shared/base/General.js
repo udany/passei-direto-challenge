@@ -217,11 +217,8 @@ export { EmitterProto };
 
 // ARRAYS //
 
-// Makes array an event emitter
-Object.assign(Array.prototype, EmitterProto);
-
 // Utility functions
-Array.prototype.selfConcat = function () {
+Array.selfConcat = function () {
     for (let i = 0; i < arguments.length; i++) {
         let a = arguments[i];
         if (a instanceof Array) {
@@ -230,11 +227,11 @@ Array.prototype.selfConcat = function () {
     }
 };
 
-Array.prototype.move = function(from, to) {
+Array.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
 };
 
-Array.prototype.remove = function (...elements) {
+Array.remove = function (...elements) {
     elements.forEach(e => {
         let idx = this.indexOf(e);
         if (idx >= 0) {
@@ -245,51 +242,13 @@ Array.prototype.remove = function (...elements) {
     return this;
 };
 
-Array.prototype.flatten = function () {
+Array.flatten = function () {
     return this.reduce(function (flat, toFlatten) {
         return flat.concat(Array.isArray(toFlatten) ? toFlatten.flatten() : toFlatten);
     }, []);
 };
 
-Array.prototype.unique = function () {
-    if (arguments.length === 0) {
-        return !!this._unique;
-    } else {
-        this._unique = arguments[0];
-    }
-};
-
-Array.prototype.super_push = Array.prototype.push;
-Array.prototype.push = function (...items) {
-    if (this.unique()) {
-        let i = 0;
-        while (i < items.length) {
-            let item = items[i];
-            if (this.indexOf(item) >= 0) {
-                items.splice(i, 1);
-            } else {
-                i++;
-            }
-        }
-    }
-
-    this.emit('add', [items]);
-
-    return this.super_push(...items);
-};
-
-Array.prototype.super_splice = Array.prototype.splice;
-Array.prototype.splice = function (...args) {
-    let removed = this.super_splice(...args);
-
-    if (removed.length) {
-        this.emit('remove', [removed]);
-    }
-
-    return removed;
-};
-
-Array.prototype.insertAt = function (index, value) {
+Array.insertAt = function (index, value) {
     this.splice(index, 0, value);
 
     this.emit('add', [[value]]);
@@ -298,7 +257,7 @@ Array.prototype.insertAt = function (index, value) {
 };
 
 
-Array.prototype.mapAsync = async function (fn) {
+Array.mapAsync = async function (fn) {
     let promises = [];
 
     let result = [];
@@ -318,13 +277,6 @@ Array.prototype.mapAsync = async function (fn) {
 
     return result;
 };
-
-for (let k in Array.prototype) {
-    if (Array.prototype.hasOwnProperty(k)) {
-        Object.defineProperty(Array.prototype, k, {enumerable: false, writable: false});
-    }
-}
-
 
 Object.map = function (obj, fn) {
     const keys = Object.keys(obj);
