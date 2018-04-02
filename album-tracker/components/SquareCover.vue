@@ -14,11 +14,7 @@
         </div>
 
         <div class="actions" @click.stop="">
-            <slot name="actions">
-                <b-button size="sm" variant="primary" type="submit">
-                    <i class="fa fa-search"></i>
-                </b-button>
-            </slot>
+            <slot name="actions"></slot>
         </div>
     </square>
 </template>
@@ -33,7 +29,7 @@
             },
             icon: {
                 type: String,
-                default: 'link'
+                default: 'chevron-right'
             },
             title: {
                 type: String,

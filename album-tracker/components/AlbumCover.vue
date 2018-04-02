@@ -7,9 +7,9 @@
             <span class="m-0">{{artist}}</span>
         </template>
         <slot name="actions" slot="actions">
-            <b-button size="sm" variant="success" type="submit">
-                <i class="fa fa-plus"></i>
-            </b-button>
+            <!--<b-button size="sm" variant="success" type="submit">-->
+                <!--<i class="fa fa-plus"></i>-->
+            <!--</b-button>-->
         </slot>
     </square-cover>
 </template>
