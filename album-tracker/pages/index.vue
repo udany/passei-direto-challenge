@@ -16,16 +16,16 @@
 
         <b-row>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="0" icon="chevron-right" title="Chill mix"></square-cover>
+                <collection-cover :id="0" icon="chevron-right" title="Chill mix"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="1" icon="chevron-right" title="Cozy by the fire"></square-cover>
+                <collection-cover :id="1" icon="chevron-right" title="Cozy by the fire"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
+                <collection-cover :id="2" icon="chevron-right" title="Party Hard"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="3" icon="chevron-right" title="Countryside harkens"></square-cover>
+                <collection-cover :id="3" icon="chevron-right" title="Countryside harkens"></collection-cover>
             </b-col>
         </b-row>
 
@@ -37,30 +37,32 @@
 
         <b-row>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="0" icon="chevron-right" title="Chill mix"></square-cover>
+                <album-cover :id="0" title="Appetite for Destruction" artist="Guns 'n Roses"></album-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="1" icon="chevron-right" title="Cozy by the fire"></square-cover>
+                <album-cover :id="1" title="Back to Black" artist="Amy Winehouse"></album-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
+                <album-cover :id="2" title="The Dark Knight OST" artist="Hans Zimmer"></album-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="3" icon="chevron-right" title="Countryside harkens"></square-cover>
+                <album-cover :id="3" title="Jinsei × Boku" artist="ONE OK ROCK"></album-cover>
             </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
-    import SquareCover from '~/components/SquareCover.vue'
+    import AlbumCover from '~/components/AlbumCover.vue'
+    import CollectionCover from '~/components/CollectionCover.vue'
 
     export default {
         head: () => ({
             title: "Home"
         }),
         components: {
-            SquareCover
+            AlbumCover,
+            CollectionCover
         }
     }
 </script>

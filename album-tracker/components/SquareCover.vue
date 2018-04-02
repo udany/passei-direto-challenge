@@ -1,11 +1,11 @@
 <template>
-    <square class="album-cover">
-        <div class="bck" :style="{backgroundImage: 'url(/mock/collection/'+id+'.jpg)'}"></div>
-        <div class="bck blur" :style="{backgroundImage: 'url(/mock/collection/'+id+'.jpg)'}"></div>
+    <square class="square-cover">
+        <div class="bck" :style="{backgroundImage: 'url('+image+')'}"></div>
+        <div class="bck blur" :style="{backgroundImage: 'url('+image+')'}"></div>
 
-        <div class="title p-2">
+        <div class="title p-2 pt-4">
             <slot name="title">
-                <h4 class="m-0">{{title ? title : id}}</h4>
+                <h4 class="m-0">{{title}}</h4>
             </slot>
         </div>
 
@@ -28,8 +28,8 @@
 
     export default {
         props: {
-            id: {
-                type: Number
+            image: {
+                type: String
             },
             icon: {
                 type: String,
@@ -47,14 +47,14 @@
 </script>
 
 <style>
-    .album-cover {
+    .square-cover {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         cursor: pointer;
         overflow: hidden;
     }
 
     /* Background */
-    .album-cover .bck {
+    .square-cover .bck {
         background-color: #000;
         background-size: cover;
         background-position: center center;
@@ -68,42 +68,42 @@
         opacity: 1;
         transition: all .5s;
     }
-    .album-cover:hover .bck {
+    .square-cover:hover .bck {
         opacity: 0;
     }
-    .album-cover .bck.blur {
+    .square-cover .bck.blur {
         transform: scale(1);
         filter: blur(5px);
         opacity: 0;
     }
-    .album-cover:hover .bck.blur {
+    .square-cover:hover .bck.blur {
         transform: scale(1.1);
         opacity: 1;
     }
 
     /* Title */
-    .album-cover .title {
+    .square-cover .title {
         position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
 
-        background: linear-gradient(to top, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .1) 80%, rgba(0, 0, 0, 0) 100%);
+        background: linear-gradient(to top, rgba(0, 0, 0, .9) 0%, rgba(0, 0, 0, .2) 80%, rgba(0, 0, 0, 0) 100%);
 
         opacity: .9;
         transition: opacity .5s;
     }
 
-    .album-cover .title > * {
-        text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+    .square-cover .title > * {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 1);
     }
 
-    .album-cover:hover .title {
+    .square-cover:hover .title {
         opacity: 1;
     }
 
     /* Action */
-    .album-cover .main-action {
+    .square-cover .main-action {
         position: absolute;
         left: 0;
         right: 0;
@@ -118,13 +118,13 @@
         transform: scale(.8);
         transition: opacity .5s, transform .5s;
     }
-    .album-cover:hover .main-action {
+    .square-cover:hover .main-action {
         opacity: 1;
         transform: scale(1);
     }
 
     /* Actions */
-    .album-cover .actions {
+    .square-cover .actions {
         position: absolute;
         right: 0;
         top: 0;
@@ -133,7 +133,7 @@
         transform: translateY(-1em);
         transition: opacity .1s, transform .1s;
     }
-    .album-cover:hover .actions {
+    .square-cover:hover .actions {
         opacity: 1;
         transform: translateY(0);
     }
