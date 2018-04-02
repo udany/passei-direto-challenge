@@ -38,6 +38,14 @@
     </div>
 </template>
 
+<script>
+    export default {
+        head: () => ({
+            titleTemplate: "Album Tracker - %s"
+        }),
+    };
+</script>
+
 <style>
     #main-nav {
         z-index:100;

@@ -53,12 +53,13 @@
 </template>
 
 <script>
-    import AppLogo from '~/components/AppLogo.vue'
     import SquareCover from '~/components/SquareCover.vue'
 
     export default {
+        head: () => ({
+            title: "Home"
+        }),
         components: {
-            AppLogo,
             SquareCover
         }
     }
