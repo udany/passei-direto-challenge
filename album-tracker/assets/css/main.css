@@ -95,6 +95,33 @@ a:hover {
     border-radius: 0 !important;
 }
 
+
+
+/* Table */
+table.table {
+
+}
+
+table.table thead th {
+    vertical-align: bottom;
+    border-bottom: 1px solid #8b8e91;
+    border-top: none;
+    color: #7f828b;
+    font-weight: normal;
+
+    padding: 0.3rem 0.75rem;
+    font-size: .8em;
+}
+
+table.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #5e6163;
+    font-size: .9em;
+}
+
+
+
 /* Unselectable */
 .no-select {
     -webkit-touch-callout: none; /* iOS Safari */

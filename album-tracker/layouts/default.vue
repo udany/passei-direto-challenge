@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar toggleable="md" type="dark" variant="primary" id="main-nav">
+        <b-navbar toggleable="md" type="dark" id="main-nav">
 
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -23,7 +23,7 @@
                         <b-input-group>
                             <b-form-input size="sm" type="text" placeholder="Search"/>
                             <b-input-group-append>
-                                <b-button size="sm" variant="primary" type="submit">
+                                <b-button size="sm" variant="secondary" type="submit">
                                     <i class="fa fa-search"></i>
                                 </b-button>
                             </b-input-group-append>
@@ -49,5 +49,6 @@
 <style>
     #main-nav {
         z-index:100;
+        background-color: #292f35;
     }
 </style>
