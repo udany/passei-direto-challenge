@@ -1,5 +1,6 @@
 <template>
-    <square-cover class="album-cover" :image="'/mock/album/'+id+'.jpg'" v-bind="$attrs">
+    <square-cover class="album-cover" :image="'/mock/album/'+id+'.jpg'" v-bind="$attrs" v-on="$listeners"
+                  @action="mainAction">
         <template slot="title">
             <h5 class="m-0">{{title}}</h5>
 
@@ -28,6 +29,16 @@
             artist: {
                 type: String,
                 default: ''
+            }
+        },
+        methods: {
+            mainAction() {
+                if (this.$listeners['action']) {
+                    this.$listeners['action']();
+                } else {
+                    const {id} = this;
+                    this.$router.push(`/album/${id}`);
+                }
             }
         },
         components: {

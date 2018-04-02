@@ -3,15 +3,17 @@
         <b-row>
             <b-col>
                 <h4 class="mb-0 mt-4">
-                    <i class="fa fa-chevron-left"></i>
-                    Back
+                    <a href="#" class="color-neutral" @click.prevent="back">
+                        <i class="fa fa-chevron-left"></i>
+                        Back
+                    </a>
                 </h4>
             </b-col>
         </b-row>
 
         <b-row class="mt-4">
             <b-col cols="6">
-                <album-cover :id="1" title="" artist="" icon="play">
+                <album-cover :id="1" title="" artist="" icon="play" @action="play">
                     <template slot="actions">
                         &nbsp;
                     </template>
@@ -120,6 +122,12 @@
         methods: {
             nthLetter(n) {
                 return String.fromCharCode(n + 64);
+            },
+            back() {
+                this.$router.go(-1);
+            },
+            play() {
+
             }
         },
         components: {

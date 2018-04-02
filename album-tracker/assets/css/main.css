@@ -79,6 +79,19 @@ a:hover {
     text-decoration: none;
 }
 
+
+a.color-neutral {
+    color: #eaeeff;
+    opacity: .7;
+    transition: all .2s;
+}
+a.color-neutral:hover {
+    opacity: 1;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
 .btn {
     color: #fff;
     border-radius: 0;

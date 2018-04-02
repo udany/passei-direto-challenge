@@ -9,11 +9,11 @@
             </slot>
         </div>
 
-        <div class="main-action">
+        <div class="main-action" @click="mainAction">
             <i class="fa" :class="'fa-'+icon"></i>
         </div>
 
-        <div class="actions">
+        <div class="actions" @click.stop="">
             <slot name="actions">
                 <b-button size="sm" variant="primary" type="submit">
                     <i class="fa fa-search"></i>
@@ -38,6 +38,11 @@
             title: {
                 type: String,
                 default: ''
+            }
+        },
+        methods: {
+            mainAction() {
+                this.$emit('action');
             }
         },
         components: {
@@ -68,14 +73,17 @@
         opacity: 1;
         transition: all .5s;
     }
+
     .square-cover:hover .bck {
         opacity: 0;
     }
+
     .square-cover .bck.blur {
         transform: scale(1);
         filter: blur(5px);
         opacity: 0;
     }
+
     .square-cover:hover .bck.blur {
         transform: scale(1.1);
         opacity: 1;
@@ -107,10 +115,10 @@
         position: absolute;
         left: 0;
         right: 0;
-        top: 50%;
+        top: 0;
+        bottom: 0;
 
         font-size: 3em;
-        margin-top: -.65em;
         text-align: center;
         text-shadow: 0 0 15px rgba(0, 0, 0, .5);
 
@@ -118,6 +126,14 @@
         transform: scale(.8);
         transition: opacity .5s, transform .5s;
     }
+    .square-cover .main-action i.fa {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        margin-top: -.65em;
+    }
+
     .square-cover:hover .main-action {
         opacity: 1;
         transform: scale(1);
@@ -133,6 +149,7 @@
         transform: translateY(-1em);
         transition: opacity .1s, transform .1s;
     }
+
     .square-cover:hover .actions {
         opacity: 1;
         transform: translateY(0);

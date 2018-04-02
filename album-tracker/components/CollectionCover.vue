@@ -1,5 +1,5 @@
 <template>
-    <square-cover class="collection-cover" :image="'/mock/collection/'+id+'.jpg'" :title="title" v-bind="$attrs">
+    <square-cover class="collection-cover" :image="'/mock/collection/'+id+'.jpg'" v-bind="$attrs" v-on="$listeners">
         <slot name="actions" slot="actions">
             <b-button size="sm" variant="success" type="submit">
                 <i class="fa fa-plus"></i>
@@ -15,10 +15,6 @@
         props: {
             id: {
                 type: Number
-            },
-            title: {
-                type: String,
-                default: ''
             }
         },
         components: {
