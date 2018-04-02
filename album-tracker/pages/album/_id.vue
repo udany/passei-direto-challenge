@@ -12,14 +12,14 @@
         </b-row>
 
         <b-row class="mt-4">
-            <b-col cols="6">
+            <b-col md="6">
                 <album-cover :id="1" title="" artist="" icon="play" @action="play">
                     <template slot="actions">
                         &nbsp;
                     </template>
                 </album-cover>
             </b-col>
-            <b-col cols="6">
+            <b-col md="6">
                 <h1>
                     Back to Black
                 </h1>
@@ -120,9 +120,6 @@
             currentLetter: "A"
         }),
         methods: {
-            nthLetter(n) {
-                return String.fromCharCode(n + 64);
-            },
             back() {
                 this.$router.go(-1);
             },

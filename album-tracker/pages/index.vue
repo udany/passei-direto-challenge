@@ -16,16 +16,16 @@
 
         <b-row>
             <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="0" icon="chevron-right" title="Chill mix"></collection-cover>
+                <collection-cover :id="0" title="Chill mix"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="1" icon="chevron-right" title="Cozy by the fire"></collection-cover>
+                <collection-cover :id="1" title="Cozy by the fire"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="2" icon="chevron-right" title="Party Hard"></collection-cover>
+                <collection-cover :id="2" title="Party Hard"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="3" icon="chevron-right" title="Countryside harkens"></collection-cover>
+                <collection-cover :id="3" title="Countryside harkens"></collection-cover>
             </b-col>
         </b-row>
 

@@ -23,51 +23,45 @@
         </b-row>
 
         <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="0" icon="chevron-right" title="Chill mix"></square-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="1" icon="chevron-right" title="Cozy by the fire"></square-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="3" icon="chevron-right" title="Countryside harkens"></square-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
-            </b-col>
-        </b-row>
-
-        <b-row>
             <b-col>
                 <h2 class="mb-0 mt-4">B</h2>
             </b-col>
         </b-row>
 
         <b-row>
+            <b-col>
+                <h2 class="mb-0 mt-4">C</h2>
+            </b-col>
+        </b-row>
+
+        <b-row>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="0" icon="chevron-right" title="Chill mix"></square-cover>
+                <collection-cover :id="0" icon="chevron-right" title="Chill mix"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="1" icon="chevron-right" title="Cozy by the fire"></square-cover>
+                <collection-cover :id="3" icon="chevron-right" title="Countryside harkens"></collection-cover>
             </b-col>
             <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="2" icon="chevron-right" title="Party Hard"></square-cover>
+                <collection-cover :id="1" icon="chevron-right" title="Cozy by the fire"></collection-cover>
             </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <square-cover :id="3" icon="chevron-right" title="Countryside harkens"></square-cover>
+        </b-row>
+
+        <b-row>
+            <b-col>
+                <h2 class="mb-0 mt-4">D</h2>
+            </b-col>
+        </b-row>
+
+        <b-row>
+            <b-col>
+                <h2 class="mb-0 mt-4">E</h2>
             </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
-    import SquareCover from '~/components/SquareCover.vue'
+    import CollectionCover from '~/components/CollectionCover.vue'
 
     export default {
         head: () => ({
@@ -82,7 +76,7 @@
             }
         },
         components: {
-            SquareCover
+            CollectionCover
         }
     }
 </script>
