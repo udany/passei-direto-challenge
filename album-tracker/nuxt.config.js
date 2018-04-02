@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     head: {
         title: 'album-tracker',
@@ -27,16 +29,11 @@ module.exports = {
 
         extractCSS: true,
 
-        // Auto-run eslint
-        extend(config, {isDev, isClient}) {
-            if (isDev && isClient) {
-                config.module.rules.push({
-                    enforce: 'pre',
-                    test: /\.(js|vue)$/,
-                    loader: 'eslint-loader',
-                    exclude: /(node_modules)/
-                })
-            }
+        extend(config) {
+            if (!config.resolve.alias) config.resolve.alias = {};
+
+            // Adds an alias to access shared resources
+            config.resolve.alias.Shared = path.resolve('../shared/');
         }
     }
 };
