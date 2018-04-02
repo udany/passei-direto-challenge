@@ -1,4 +1,4 @@
-# almbum-tracker
+# album-tracker
 
 > Serves the front-end.
 >
