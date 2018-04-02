@@ -1,6 +1,8 @@
 <template>
     <square class="album-cover">
         <div class="bck" :style="{backgroundImage: 'url(/mock/collection/'+id+'.jpg)'}"></div>
+        <div class="bck blur" :style="{backgroundImage: 'url(/mock/collection/'+id+'.jpg)'}"></div>
+
         <div class="title p-2">
             <slot name="title">
                 <h4 class="m-0">{{title ? title : id}}</h4>
@@ -64,10 +66,19 @@
         bottom: 0;
 
         opacity: 1;
-        transition: opacity .2s;
+        transition: all .5s;
     }
     .album-cover:hover .bck {
-        opacity: .5;
+        opacity: 0;
+    }
+    .album-cover .bck.blur {
+        transform: scale(1);
+        filter: blur(5px);
+        opacity: 0;
+    }
+    .album-cover:hover .bck.blur {
+        transform: scale(1.1);
+        opacity: 1;
     }
 
     /* Title */
@@ -101,10 +112,11 @@
         font-size: 3em;
         margin-top: -.65em;
         text-align: center;
+        text-shadow: 0 0 15px rgba(0, 0, 0, .5);
 
         opacity: 0;
-        transform: scale(1.2);
-        transition: opacity .1s, transform .1s;
+        transform: scale(.8);
+        transition: opacity .5s, transform .5s;
     }
     .album-cover:hover .main-action {
         opacity: 1;
