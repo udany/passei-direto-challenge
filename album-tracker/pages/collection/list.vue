@@ -35,14 +35,8 @@
         </b-row>
 
         <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="0" icon="chevron-right" title="Chill mix"></collection-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="3" icon="chevron-right" title="Countryside harkens"></collection-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="1" icon="chevron-right" title="Cozy by the fire"></collection-cover>
+            <b-col md="3" cols="6" class="mt-4" v-for="c in collections" :key="c.id">
+                <collection-cover :value="c" icon="chevron-right" title="Chill mix"></collection-cover>
             </b-col>
         </b-row>
 
@@ -62,14 +56,28 @@
 
 <script>
     import CollectionCover from '~/components/CollectionCover.vue'
+    import Collection from 'Shared/entities/Collection'
+    import axios from 'axios';
 
     export default {
         head: () => ({
             title: "Collection List"
         }),
         data: () => ({
-            currentLetter: "A"
+            currentLetter: "A",
+            collections: []
         }),
+        async asyncData ({ params }) {
+            let data;
+            if (process.server) {
+                data = require('~/static/mock/collections.json');
+            } else {
+                let result = await axios.get(`http://localhost:3000/mock/collections.json`);
+                data = result.data;
+            }
+
+            return { collections: data }
+        },
         methods: {
             nthLetter(n) {
                 return String.fromCharCode(n + 64);
@@ -77,6 +85,11 @@
         },
         components: {
             CollectionCover
+        },
+        created() {
+            if (this.collections.length && this.collections[0].constructor !== Collection) {
+                this.collections = this.collections.map(d => new Collection(d));
+            }
         }
     }
 </script>
