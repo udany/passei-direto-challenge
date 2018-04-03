@@ -28,10 +28,79 @@ export class DatabaseModel {
         return this._setOrReturnKey('_insertWithId', v);
     }
 
-    static save(obj) {
+    static async save(db, obj, allowedFields = [], insert = false) {
+        const pks = this.primaryKeys();
+        const exists = pks.reduce((v, pk) => v && obj[pk.name], true);
 
+        const fields = this.fields.filter(f => !allowedFields.length || allowedFields.indexOf(f.name) >= 0);
+
+        const data = fields.reduce((d, f) => {
+            d[f.name] = f.get(obj);
+            return d;
+        }, {});
+
+        if (insert || !exists) {
+            const query = this.getInsertQuery(data);
+
+            return db.query(query, data);
+        } else {
+            const query = this.getUpdateQuery(data);
+
+            return db.query(query, data);
+        }
     }
 
+    static getInsertQuery(data) {
+        const pks = this.primaryKeys();
+        data = JSON.parse(JSON.stringify(data));
+
+        if (!this.insertWithId()) {
+            pks.forEach(pk => {
+                delete data[pk.name];
+            });
+        }
+
+        let keys = [];
+        let values = [];
+
+        for (let key in data) {
+            if (data.hasOwnProperty(key)) {
+                keys.push(_e(key));
+                values.push(':'+key);
+            }
+        }
+
+        return `INSERT INTO ${_e(this.table)} (${keys.join(', ')}) VALUES (${values.join(', ')})`;
+    }
+
+    static getUpdateQuery(data) {
+        const pks = this.primaryKeys();
+        data = JSON.parse(JSON.stringify(data));
+
+        let idData = {};
+
+        pks.forEach(pk => {
+            idData[pk.name] = data[pk.name];
+            delete data[pk.name];
+        });
+
+        let sets = [];
+        let where = [];
+
+        for (let key in data) {
+            if (data.hasOwnProperty(key)) {
+                sets.push(`${_e(key)} = :${key}`);
+            }
+        }
+
+        for (let key in idData) {
+            if (idData.hasOwnProperty(key)) {
+                where.push(`${_e(key)} = :${key}`);
+            }
+        }
+
+        return `UPDATE ${_e(this.table)} SET ${sets.join(', ')} WHERE ${where.join(', ')}`;
+    }
 
     static getCreateStatement() {
         let lines = [];
@@ -46,11 +115,15 @@ export class DatabaseModel {
             lines.push(line);
         }
 
-        let primaryKeys = this.fields.filter(f => f.primaryKey).map(f => _e(f.name));
+        let primaryKeys = this.primaryKeys().map(f => _e(f.name));
 
         lines.push(`    PRIMARY KEY (${primaryKeys.join(', ')})`);
 
         return `CREATE TABLE ${_e(this.table)} (\n${lines.join(',\n')}\n) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;`;
+    }
+
+    static primaryKeys() {
+        return this.fields.filter(f => f.primaryKey);
     }
 }
 DatabaseModel._setOrReturnKey = setOrReturnKey;
@@ -128,6 +201,16 @@ export class DatabaseField {
         } else {
             return this.defaultValue;
         }
+    }
+}
+
+export class DatabaseFielfBoolean extends DatabaseField {
+    baseGet(o) {
+        return o[this.name] ? 0 : 1;
+    }
+
+    baseSet(o, val) {
+        o[this.name] = !!val;
     }
 }
 DatabaseField.prototype._setOrReturnKey = setOrReturnKey;

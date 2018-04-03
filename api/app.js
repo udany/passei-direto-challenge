@@ -5,6 +5,8 @@
  * Date: 22/06/2017
  * This code may not be reused without proper permission from its creator.
  */
+import "../shared/base/extend";
+
 let express = require('express');
 let path = require('path');
 let logger = require('morgan');

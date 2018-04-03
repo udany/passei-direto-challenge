@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import cfg from './config';
+
 /**
  * Module dependencies.
  */
@@ -12,7 +14,7 @@ let http = require('http');
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || '3001');
+let port = normalizePort(process.env.PORT || cfg.port);
 app.set('port', port);
 
 /**
