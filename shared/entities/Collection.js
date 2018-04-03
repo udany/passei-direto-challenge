@@ -23,8 +23,6 @@ Collection.Attributes = [
     new Entity.Attributes.Integer('id'),
     new Entity.Attributes.String('name'),
     new Entity.Attributes.String('description'),
-    new Entity.Attributes.Date('dateCreated', true),
-    new Entity.Attributes.Date('dateUpdated', true),
     new Entity.Attributes.Boolean('hasImage')
 ];
 
