@@ -3,6 +3,9 @@
         <b-row>
             <b-col>
                 <h1 class="my-4">
+                    <b-button variant="success" class="float-right mt-2">
+                        <i class="fa fa-plus"></i>
+                    </b-button>
                     Collections
                 </h1>
             </b-col>

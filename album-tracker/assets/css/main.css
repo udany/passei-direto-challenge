@@ -176,3 +176,7 @@ table.table td {
 ::selection {
     background: rgba(153, 161, 208, 0.45);
 }
+
+.clear {
+    clear: both;
+}

@@ -20,6 +20,12 @@
                             <h1 class="mt-4 mt-md-0 ">Chill Mix</h1>
 
                             <p>An enthralling set designed to chill you out like you've never before been chilled.</p>
+
+
+                            <a href="#" class="color-neutral" @click.prevent="edit">
+                                <i class="fa fa-pencil"></i>
+                                Edit
+                            </a>
                         </b-col>
                     </b-row>
                 </div>
@@ -59,7 +65,10 @@
         methods: {
             back() {
                 this.$router.go(-1);
-            }
+            },
+            edit() {
+                this.$router.push(`/collection/edit/${this.$route.params.id}`);
+            },
         },
         components: {
             SimpleCover,

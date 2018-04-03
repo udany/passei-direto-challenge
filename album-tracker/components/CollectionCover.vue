@@ -1,5 +1,6 @@
 <template>
-    <square-cover v-if="value && value.getImageUrl" class="collection-cover" :image="value.getImageUrl()" :title="value.name" v-bind="$attrs" v-on="$listeners">
+    <square-cover v-if="value && value.getImageUrl" class="collection-cover" :image="value.getImageUrl()" :title="value.name" v-bind="$attrs" v-on="$listeners"
+                  @action="mainAction">
         <slot name="actions" slot="actions"></slot>
     </square-cover>
 </template>
@@ -16,6 +17,16 @@
         },
         components: {
             SquareCover
+        },
+        methods: {
+            mainAction() {
+                if (this.$listeners['action']) {
+                    this.$listeners['action']();
+                } else {
+                    const {value} = this;
+                    this.$router.push(`/collection/${value.id}`);
+                }
+            }
         }
     }
 </script>
