@@ -3,7 +3,7 @@
         <b-row>
             <b-col class="letter-links text-center">
                 <a :href="a.length ? '#'+l : '#'" class="letter-link" :class="{disabled: !a.length}"
-                   v-for="(a, l) in letters" :key="l">
+                   v-for="(a, l) in letters" :key="l" @click="letterClick(a, $event)">
                     {{l}}
                 </a>
             </b-col>
@@ -73,6 +73,11 @@
                     }else {
                         this.letters['#'].push(item);
                     }
+                }
+            },
+            letterClick(a, evt) {
+                if (!a.length) {
+                    evt.preventDefault();
                 }
             }
         },
