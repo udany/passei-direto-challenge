@@ -295,13 +295,9 @@ Entity.Attributes.Object = class {
     constructor(name) {
         this.name = name;
 
-        this._database = true;
         this._safe = true;
         this._serialize = true;
 
-        this._index = false;
-        this._unique = false;
-        this._sparse = false;
         this._watchable = false;
     }
 
@@ -363,10 +359,6 @@ Entity.Attributes.Object = class {
         }
     }
 
-    database(val) {
-        return this._setOrReturnKey('_database', val);
-    }
-
     safe(val) {
         return this._setOrReturnKey('_safe', val);
     }
@@ -375,26 +367,8 @@ Entity.Attributes.Object = class {
         return this._setOrReturnKey('_serialize', val);
     }
 
-    index(val) {
-        return this._setOrReturnKey('_index', val);
-    }
-
     watchable(val) {
         return this._setOrReturnKey('_watchable', val);
-    }
-
-    unique(val) {
-        if (val) {
-            this.index(val);
-        }
-        return this._setOrReturnKey('_unique', val);
-    }
-
-    sparse(val) {
-        if (val) {
-            this.index(val);
-        }
-        return this._setOrReturnKey('_sparse', val);
     }
 
     Get(obj) {
