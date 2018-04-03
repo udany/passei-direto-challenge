@@ -35,5 +35,9 @@ module.exports = {
             // Adds an alias to access shared resources
             config.resolve.alias.Shared = path.resolve('../shared/');
         }
-    }
+    },
+
+    plugins: [
+        '../shared/base/extend/'
+    ]
 };
