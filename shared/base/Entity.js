@@ -285,25 +285,6 @@ Entity.ClassMap = {
     }
 };
 
-// Array.prototype.sortByField = function (fields) {
-//     if (!(fields instanceof Array)) {
-//         fields = [fields];
-//     }
-//
-//     return this.sort(function (a, b) {
-//         for (let field of fields) {
-//             if (a.Get(field) < b.Get(field)) {
-//                 return -1;
-//             }
-//             if (a.Get(field) > b.Get(field)) {
-//                 return 1;
-//             }
-//         }
-//         return 0;
-//     });
-// };
-// Object.defineProperty(Array.prototype, 'sortByField', {enumerable: false, writable: false});
-
 /// Attributes
 /** @var {Entity.Attributes.Object[]} Attributes **/
 Entity.Attributes = {};

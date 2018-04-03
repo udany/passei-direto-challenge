@@ -10,53 +10,35 @@
 
         <b-row>
             <b-col class="letter-links text-center">
-                <a href="#" @click.prevent="currentLetter = nthLetter(n)" class="letter-link" v-for="n in 25" :key="nthLetter(n)" :class="{active: currentLetter === nthLetter(n)}">
-                    {{nthLetter(n)}}
+                <a :href="a.length ? '#'+l : '#'" class="letter-link" :class="{disabled: !a.length}"
+                   v-for="(a, l) in letters" :key="l">
+                    {{l}}
                 </a>
             </b-col>
         </b-row>
 
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">A</h2>
-            </b-col>
-        </b-row>
+        <div v-for="(a, l) in letters" :key="l" v-if="a.length">
+            <b-row>
+                <b-col>
+                    <h2 class="mb-0 mt-4">
+                        <a :name="l">{{l}}</a>
+                    </h2>
+                </b-col>
+            </b-row>
 
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">B</h2>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">C</h2>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col md="3" cols="6" class="mt-4" v-for="c in collections" :key="c.id">
-                <collection-cover :value="c" icon="chevron-right" title="Chill mix"></collection-cover>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">D</h2>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">E</h2>
-            </b-col>
-        </b-row>
+            <b-row>
+                <b-col md="3" cols="6" class="mt-4" v-for="c in a" :key="c.id">
+                    <collection-cover :value="c" icon="chevron-right" title="Chill mix"></collection-cover>
+                </b-col>
+            </b-row>
+        </div>
     </div>
 </template>
 
 <script>
     import CollectionCover from '~/components/CollectionCover.vue'
     import Collection from 'Shared/entities/Collection'
+    import Sorter from 'Shared/base/Sorter'
     import axios from 'axios';
 
     export default {
@@ -65,7 +47,11 @@
         }),
         data: () => ({
             currentLetter: "A",
-            collections: []
+
+            letters: {},
+            collections: [],
+
+            sorter: Sorter.fromAttribute(Collection.GetAttribute('name'), 1).caseInsensitive()
         }),
         async asyncData ({ params }) {
             let data;
@@ -80,7 +66,22 @@
         },
         methods: {
             nthLetter(n) {
-                return String.fromCharCode(n + 64);
+                return String.fromCharCode(n);
+            },
+            createLetterArrays() {
+                let letters = {};
+
+                for (let i = 65; i <= 90; i++) {
+                    letters[this.nthLetter(i)] = [];
+                }
+
+                this.letters = letters;
+            },
+            fillLetterArrays() {
+                for (let c of this.collections) {
+                    let letter = c.name[0].toUpperCase();
+                    this.letters[letter].push(c);
+                }
             }
         },
         components: {
@@ -90,6 +91,11 @@
             if (this.collections.length && this.collections[0].constructor !== Collection) {
                 this.collections = this.collections.map(d => new Collection(d));
             }
+
+            this.collections = Sorter.sort(this.collections, this.sorter);
+
+            this.createLetterArrays();
+            this.fillLetterArrays();
         }
     }
 </script>
@@ -110,8 +116,13 @@
         transition: all .3s;
     }
 
-    a.letter-link.active, a.letter-link:hover {
+    a.letter-link:hover {
         opacity: 1;
         transform: scale(1.1);
+    }
+
+    a.letter-link.disabled {
+        cursor: default;
+        opacity: .2;
     }
 </style>
