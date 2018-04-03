@@ -1,8 +1,8 @@
 {
-    "name": "almbum-tracker",
+    "name": "album-tracker",
     "version": "1.0.0",
     "description": "Nuxt.js project",
-    "author": "udany <long.eagle.goodies@gmail.com>",
+    "author": "udany",
     "private": true,
     "scripts": {
         "dev": "nuxt",
