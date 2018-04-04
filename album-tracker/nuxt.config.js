@@ -17,8 +17,18 @@ module.exports = {
 
     modules: [
         '@nuxtjs/font-awesome',
-        'bootstrap-vue/nuxt'
+        'bootstrap-vue/nuxt',
+        [
+            '@nuxtjs/toast',
+            {
+                closeBtn: false
+            }
+        ]
     ],
+
+    toast: {
+        position: 'bottom-left'
+    },
 
     css: [
         './assets/css/main.css'

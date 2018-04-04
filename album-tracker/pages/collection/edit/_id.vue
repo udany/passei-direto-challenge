@@ -1,5 +1,5 @@
 <template>
-    <div class="container my-4">
+    <div class="container my-4" v-if="item">
         <b-row>
             <b-col>
                 <h4 class="mb-0 mt-4">
@@ -16,22 +16,21 @@
                 <!-- Main Info -->
 
                 <b-form-group label="Name:">
-                    <b-form-input
-                            value="Chill Mix"
+                    <b-form-input v-model="item.name"
                             placeholder="Name">
                     </b-form-input>
                 </b-form-group>
 
 
                 <b-form-group label="Description:">
-                    <textarea ref="ta" v-model="desc" class="form-control" placeholder="Describe this collection"></textarea>
+                    <textarea ref="ta" v-model="item.description" class="form-control" placeholder="Describe this collection"></textarea>
                 </b-form-group>
 
                 <b-form-group label="Cover:">
 
                     <b-row>
                         <b-col cols="6">
-                            <simple-cover image="/mock/collection/0.jpg"></simple-cover>
+                            <simple-cover :image="item.getImageUrl()"></simple-cover>
                         </b-col>
                         <b-col>
                             <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"></file-uploader>
@@ -69,6 +68,15 @@
                 </b-row>
             </b-col>
         </b-row>
+
+        <b-row>
+            <b-col class="mt-4 text-right">
+                <b-button variant="success" @click="save">
+                    Save <i class="fa fa-check"></i>
+                </b-button>
+            </b-col>
+        </b-row>
+
     </div>
 </template>
 
@@ -77,25 +85,49 @@
     import AlbumCover from '~/components/AlbumCover.vue'
     import FileUploader from '~/components/FileUploader.vue'
 
+    import api from '~/plugins/api';
+    import Collection from "Shared/entities/Collection";
+
     export default {
-        head: () => ({
-            title: "Back to Black | Edit"
-        }),
+        head() {
+            return {
+                title: this.item ? this.item.name + ' | Edit' : 'Loading...'
+            };
+        },
         data: () => ({
-            desc: "An enthralling set designed to chill you out like you've never before been chilled."
+            item: null
         }),
+        async asyncData({params}) {
+            let {data} = await api.get(`/collection/${params.id}`);
+
+            return {item: new Collection(data)}
+        },
         methods: {
             back() {
                 this.$router.go(-1);
             },
             play() {
 
+            },
+            async save() {
+                let {data} = await api.post(`/collection/${this.item.id}`, this.item);
+
+                if (data.id) {
+                    this.$toast.success('Saved', {duration: 1000});
+
+                    this.back();
+                }
             }
         },
         components: {
             SimpleCover,
             AlbumCover,
             FileUploader
+        },
+        created() {
+            if (this.item && !(this.item instanceof Collection)) {
+                this.item = new Collection(this.item);
+            }
         }
     }
 </script>

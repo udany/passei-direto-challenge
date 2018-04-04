@@ -59,16 +59,18 @@
     import Collection from "Shared/entities/Collection";
 
     export default {
-        head: () => ({
-            title: "Back to Black"
-        }),
+        head() {
+            return {
+                title: this.item ? this.item.name : 'Loading...'
+            };
+        },
         data: () => ({
             item: null
         }),
-        async asyncData ({ params }) {
-            let { data } = await api.get(`/collection/${params.id}`);
+        async asyncData({params}) {
+            let {data} = await api.get(`/collection/${params.id}`);
 
-            return { item: new Collection(data) }
+            return {item: new Collection(data)}
         },
         methods: {
             back() {
@@ -107,20 +109,23 @@
         top: -50px;
         bottom: -50px;
 
-        opacity: .8;
+        opacity: .5;
         filter: blur(10px);
     }
 
     .collection-header > .content {
         position: relative;
     }
+
     .collection-header .content > * {
         color: #fff;
         text-shadow: 0 0 10px rgba(0, 0, 0, .4);
     }
+
     .collection-header .content p {
         color: #ccd3d8;
     }
+
     .collection-header .content .simple-cover {
         box-shadow: 0 0 30px rgba(0, 0, 0, .4);
     }
