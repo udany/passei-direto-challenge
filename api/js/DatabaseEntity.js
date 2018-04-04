@@ -1,4 +1,5 @@
 import {setOrReturnKey} from '../../shared/base/General';
+import {DatabaseQueryClause, DatabaseQueryCondition} from "./DatabaseQueryComponent";
 
 export function dbBacktick(val) {
     return`\`${val}\``;
@@ -60,6 +61,31 @@ export class DatabaseModel {
 
             return db.query(query, data);
         }
+    }
+
+    /**
+     *
+     * @param {String[]} fieldNames
+     * @param {DatabaseQueryComponent[]} filters
+     * @returns {string}
+     */
+    static getSelectQuery(fieldNames = [], filters = []) {
+        const fields = this.fields.filter(f => !fieldNames.length || fieldNames.indexOf(f.name) >= 0);
+
+        const columns = fields.map(f => _e(f.name));
+
+        if (!filters.length) {
+            filters.push(new DatabaseQueryCondition({
+                values: 1,
+                column: 1,
+                bound: false,
+                escapeColumn: false
+            }))
+        }
+
+        const where = new DatabaseQueryClause(filters, "AND");
+
+        return `SELECT ${columns.join(', ')} FROM ${_e(this.table)} WHERE ${where.getClause()}`;
     }
 
     static getInsertQuery(data) {
