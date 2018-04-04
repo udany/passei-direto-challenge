@@ -98,9 +98,13 @@
             item: null
         }),
         async asyncData({params}) {
-            let {data} = await api.get(`/collection/${params.id}`);
+            if (!params.id) {
+                return {item: new Collection()}
+            } else {
+                let {data} = await api.get(`/collection/${params.id}`);
 
-            return {item: new Collection(data)}
+                return {item: new Collection(data)}
+            }
         },
         methods: {
             back() {

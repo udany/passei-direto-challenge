@@ -407,12 +407,16 @@ Entity.Attributes.Object = class {
 
 /// == String
 Entity.Attributes.String = class extends Entity.Attributes.Object {
+    nullable(val) {
+        return this._setOrReturnKey('_nullable', val);
+    }
+
     Get(obj) {
-        return obj[this.name] === null ? null : obj[this.name].toString();
+        return obj[this.name] === null ? (this.nullable() ? null : '') : obj[this.name].toString();
     }
 
     Set(obj, val) {
-        obj[this.name] = val === null ? null : val.toString();
+        obj[this.name] = val === null ? (this.nullable() ? null : '') : val.toString();
     }
 };
 

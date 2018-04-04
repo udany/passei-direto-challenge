@@ -3,7 +3,7 @@
         <b-row>
             <b-col>
                 <h1 class="my-4">
-                    <b-button variant="success" class="float-right mt-2">
+                    <b-button variant="success" class="float-right mt-2" @click="add">
                         <i class="fa fa-plus"></i>
                     </b-button>
                     Collections
@@ -43,6 +43,9 @@
             return { collections: data }
         },
         methods: {
+            add() {
+                this.$router.push(`/collection/edit/0`);
+            }
         },
         components: {
             CollectionCover,
