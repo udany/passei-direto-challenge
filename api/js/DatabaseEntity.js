@@ -42,7 +42,19 @@ export class DatabaseModel {
         if (insert || !exists) {
             const query = this.getInsertQuery(data);
 
-            return db.query(query, data);
+            const result = await db.query(query, data);
+            const [insertData] = result;
+
+            if (!this.insertWithId()) {
+                if (insertData.insertId) {
+                    const aiPk = pks.find(x => x.autoIncrement);
+                    if (aiPk) {
+                        aiPk.set(obj, insertData.insertId);
+                    }
+                }
+            }
+
+            return result;
         } else {
             const query = this.getUpdateQuery(data);
 

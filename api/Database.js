@@ -33,8 +33,10 @@ db = new Proxy(db, {
     get: function(obj, prop) {
         if (obj.hasOwnProperty(prop)){
             return obj[prop];
-        } else if (obj.conn[prop]) {
+        } else if (obj.conn && obj.conn[prop]) {
             return obj.conn[prop];
+        } else {
+            return null;
         }
     }
 });
