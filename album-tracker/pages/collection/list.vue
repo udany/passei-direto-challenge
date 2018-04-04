@@ -37,10 +37,7 @@
             sorter: Sorter.fromAttribute(Collection.GetAttribute('name'), 1).caseInsensitive()
         }),
         async asyncData ({ params }) {
-            let data;
-
-            let result = await axios.get(`http://localhost:3001/collection/`);
-            data = result.data;
+            let { data } = await axios.get(`http://localhost:3001/collection/`);
 
             return { collections: data }
         },
