@@ -18,8 +18,10 @@ export class Collection extends Entity {
     getImageUrl() {
         if (this.tempImage) {
             return `http://localhost:3001/data/temp/${this.tempImage}`;
-        } else {
+        } else if(this.hasImage) {
             return `http://localhost:3001/data/collection/${this.id}_${this.imageSeed}`;
+        } else {
+            return '';
         }
     }
 }
