@@ -2,7 +2,7 @@
     <div class="container-fluid m-0" v-if="item">
         <b-row>
             <b-col class="p-4 collection-header">
-                <div class="bck" :style="{'background-image': `url(${item.getImageUrl()})`}"></div>
+                <div class="bck" :style="{'background-image': item.hasImage ? `url(${item.getImageUrl()})` : ''}"></div>
 
                 <h5 class="mt-0 ml-4 back-link">
                     <a href="#" class="color-neutral" @click.prevent="back">
@@ -14,7 +14,7 @@
                 <div class="container content pb-0 pt-5 pb-md-5">
                     <b-row>
                         <b-col lg="2" md="3">
-                            <simple-cover :image="item.getImageUrl()"></simple-cover>
+                            <simple-cover :image="item.getImageUrl()" v-if="item.hasImage"></simple-cover>
                         </b-col>
                         <b-col>
                             <h1 class="mt-4 mt-md-0 ">{{item.name}}</h1>

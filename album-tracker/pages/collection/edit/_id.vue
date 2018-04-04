@@ -30,10 +30,10 @@
 
                     <b-row>
                         <b-col cols="6">
-                            <simple-cover :image="item.getImageUrl()"></simple-cover>
+                            <simple-cover :image="item.getImageUrl()" v-if="item.hasImage || item.tempImage"></simple-cover>
                         </b-col>
                         <b-col>
-                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"></file-uploader>
+                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"  @upload-finish="uploadedImage"></file-uploader>
 
                             <p class="text-center text-muted mt-2">
                                 You may drag a file to the button
@@ -113,6 +113,7 @@
             play() {
 
             },
+
             async save() {
                 let {data} = await api.post(`/collection/${this.item.id}`, this.item);
 
@@ -121,7 +122,13 @@
 
                     this.back();
                 }
-            }
+            },
+
+            uploadedImage(fu) {
+                if (fu.response && fu.response.status) {
+                    this.item.tempImage = fu.response.data;
+                }
+            },
         },
         components: {
             SimpleCover,

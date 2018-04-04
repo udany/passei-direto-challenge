@@ -1,6 +1,6 @@
 <template>
     <square class="simple-cover">
-        <div class="bck" :style="{backgroundImage: 'url('+image+'?cover)'}"></div>
+        <div class="bck" :style="{backgroundImage: 'url('+image+')'}"></div>
     </square>
 </template>
 

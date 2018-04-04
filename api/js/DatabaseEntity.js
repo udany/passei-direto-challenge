@@ -287,9 +287,9 @@ export class DatabaseField {
     }
 }
 
-export class DatabaseFielfBoolean extends DatabaseField {
+export class DatabaseFieldBoolean extends DatabaseField {
     baseGet(o) {
-        return o[this.name] ? 0 : 1;
+        return o[this.name] ? 1 : 0;
     }
 
     baseSet(o, val) {
