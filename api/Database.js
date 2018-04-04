@@ -35,9 +35,14 @@ db = new Proxy(db, {
             return obj[prop];
         } else if (obj.conn && obj.conn[prop]) {
             return obj.conn[prop];
-        } else {
-            return null;
+        } else if (!obj.conn) {
+            return async function (...args) {
+                await obj._connPromise;
+                return obj.conn[prop](...args);
+            };
         }
+
+        return null;
     }
 });
 

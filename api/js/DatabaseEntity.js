@@ -1,5 +1,5 @@
 import {setOrReturnKey} from '../../shared/base/General';
-import {DatabaseQueryClause, DatabaseQueryCondition} from "./DatabaseQueryComponent";
+import {DatabaseQueryClause, DatabaseQueryComponent, DatabaseQueryCondition} from "./DatabaseQueryComponent";
 
 export function dbBacktick(val) {
     return`\`${val}\``;
@@ -64,26 +64,71 @@ export class DatabaseModel {
     }
 
     /**
-     *
+     * Queries the database for entries
+     * @param db
+     * @param {DatabaseQueryComponent[]|Object[]} filters
      * @param {String[]} fieldNames
-     * @param {DatabaseQueryComponent[]} filters
-     * @returns {string}
+     * @returns {Entity[]}
      */
-    static getSelectQuery(fieldNames = [], filters = []) {
-        const fields = this.fields.filter(f => !fieldNames.length || fieldNames.indexOf(f.name) >= 0);
-
-        const columns = fields.map(f => _e(f.name));
-
+    static async select(db, filters = [], fieldNames = []) {
         if (!filters.length) {
             filters.push(new DatabaseQueryCondition({
                 values: 1,
                 column: 1,
                 bound: false,
                 escapeColumn: false
-            }))
+            }));
         }
 
+        filters = filters.map(f => f instanceof DatabaseQueryComponent ? f : new DatabaseQueryCondition(f));
+
         const where = new DatabaseQueryClause(filters, "AND");
+
+        const query = this.getSelectQuery(where, fieldNames);
+        const params = where.getParams();
+
+        let [rows] = await db.query(query, params);
+
+        return rows.map(r => new this.entity(r));
+    }
+
+    static async getById(db, id) {
+        if (!Array.isArray(id)) id = [id];
+
+        const pks = this.primaryKeys();
+        let filters = [];
+
+        for (let [index, field] of pks.entries()) {
+            filters.push({
+                column: field.name,
+                values: id[index]
+            });
+        }
+
+        let result = await this.select(db, filters);
+
+        return result.length ? result[0] : null;
+    }
+
+    /**
+     * Returns a select query
+     * @param {DatabaseQueryComponent} where
+     * @param {String[]} fieldNames
+     * @returns {string}
+     */
+    static getSelectQuery(where = null, fieldNames = []) {
+        const fields = this.fields.filter(f => !fieldNames.length || fieldNames.indexOf(f.name) >= 0);
+
+        const columns = fields.map(f => _e(f.name));
+
+        if (!where) {
+            where = new DatabaseQueryCondition({
+                values: 1,
+                column: 1,
+                bound: false,
+                escapeColumn: false
+            });
+        }
 
         return `SELECT ${columns.join(', ')} FROM ${_e(this.table)} WHERE ${where.getClause()}`;
     }
