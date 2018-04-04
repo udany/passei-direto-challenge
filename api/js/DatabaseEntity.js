@@ -33,7 +33,7 @@ export class DatabaseModel {
         const pks = this.primaryKeys();
         const exists = pks.reduce((v, pk) => v && obj[pk.name], true);
 
-        const fields = this.fields.filter(f => !allowedFields.length || allowedFields.indexOf(f.name) >= 0);
+        const fields = this.fields.filter(f => !allowedFields.length || allowedFields.indexOf(f.name) >= 0 || pks.indexOf(f) >= 0);
 
         const data = fields.reduce((d, f) => {
             d[f.name] = f.get(obj);
