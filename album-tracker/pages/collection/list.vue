@@ -38,12 +38,9 @@
         }),
         async asyncData ({ params }) {
             let data;
-            if (process.server) {
-                data = require('~/static/mock/collections.json');
-            } else {
-                let result = await axios.get(`http://localhost:3000/mock/collections.json`);
-                data = result.data;
-            }
+
+            let result = await axios.get(`http://localhost:3001/collection/`);
+            data = result.data;
 
             return { collections: data }
         },

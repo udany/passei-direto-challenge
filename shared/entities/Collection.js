@@ -14,7 +14,7 @@ export class Collection extends Entity {
         return `/collection/${this.id}`;
     }
     getImageUrl() {
-        return `/mock/collection/${this.id}.jpg`;
+        return `http://localhost:3001/data/collection/${this.id}`;
     }
 }
 
