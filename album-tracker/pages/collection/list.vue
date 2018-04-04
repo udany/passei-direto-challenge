@@ -26,7 +26,8 @@
 
     import Collection from 'Shared/entities/Collection'
     import Sorter from 'Shared/base/Sorter'
-    import axios from 'axios';
+
+    import api from '~/plugins/api';
 
     export default {
         head: () => ({
@@ -37,7 +38,7 @@
             sorter: Sorter.fromAttribute(Collection.GetAttribute('name'), 1).caseInsensitive()
         }),
         async asyncData ({ params }) {
-            let { data } = await axios.get(`http://localhost:3001/collection/`);
+            let { data } = await api.get(`/collection`);
 
             return { collections: data }
         },

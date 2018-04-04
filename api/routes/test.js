@@ -3,27 +3,38 @@ import CollectionModel from "../models/CollectionModel";
 import Collection from "../../shared/entities/Collection";
 
 import db from '../Database';
+import {DatabaseQueryCondition} from "../js/DatabaseQueryComponent";
 
 let router = express.Router();
 
 router.get('/', async function (req, res, next) {
 
 
-    res.send(CollectionModel.getCreateStatement());
+    res.send(CollectionModel.getSelectQuery());
 });
 
 router.get('/i', async function (req, res, next) {
     let obj = new Collection({
-        id: 1,
         "name": "Chill mix",
         description: 'Test2'
     });
 
-    res.send(await CollectionModel.save(db, obj));
+    await CollectionModel.save(db, obj);
+
+    res.send(obj);
 });
 
 router.get('/t', async function (req, res, next) {
-    let [rows, fields] = await db.query('SELECT * FROM `collection`');
+    let rows = await CollectionModel.select(db, [{
+        column: 'id',
+        values: 1
+    }]);
+
+    res.send(rows);
+});
+
+router.get('/id', async function (req, res, next) {
+    let rows = await CollectionModel.getById(db, 1);
 
     res.send(rows);
 });

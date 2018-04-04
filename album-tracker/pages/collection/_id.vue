@@ -1,8 +1,8 @@
 <template>
-    <div class="container-fluid m-0">
+    <div class="container-fluid m-0" v-if="item">
         <b-row>
             <b-col class="p-4 collection-header">
-                <div class="bck" style="background-image: url(/mock/collection/0.jpg)"></div>
+                <div class="bck" :style="{'background-image': `url(${item.getImageUrl()})`}"></div>
 
                 <h5 class="mt-0 ml-4 back-link">
                     <a href="#" class="color-neutral" @click.prevent="back">
@@ -14,12 +14,12 @@
                 <div class="container content pb-0 pt-5 pb-md-5">
                     <b-row>
                         <b-col lg="2" md="3">
-                            <simple-cover image="/mock/collection/0.jpg"></simple-cover>
+                            <simple-cover :image="item.getImageUrl()"></simple-cover>
                         </b-col>
                         <b-col>
-                            <h1 class="mt-4 mt-md-0 ">Chill Mix</h1>
+                            <h1 class="mt-4 mt-md-0 ">{{item.name}}</h1>
 
-                            <p>An enthralling set designed to chill you out like you've never before been chilled.</p>
+                            <p>{{item.description}}</p>
 
 
                             <a href="#" class="color-neutral" @click.prevent="edit">
@@ -55,24 +55,37 @@
     import SimpleCover from '~/components/SimpleCover.vue'
     import AlbumCover from '~/components/AlbumCover.vue'
 
+    import api from '~/plugins/api';
+    import Collection from "Shared/entities/Collection";
+
     export default {
         head: () => ({
             title: "Back to Black"
         }),
         data: () => ({
-            currentLetter: "A"
+            item: null
         }),
+        async asyncData ({ params }) {
+            let { data } = await api.get(`/collection/${params.id}`);
+
+            return { item: new Collection(data) }
+        },
         methods: {
             back() {
                 this.$router.go(-1);
             },
             edit() {
-                this.$router.push(`/collection/edit/${this.$route.params.id}`);
+                this.$router.push(`/collection/edit/${this.item.id}`);
             },
         },
         components: {
             SimpleCover,
             AlbumCover
+        },
+        created() {
+            if (this.item && !(this.item instanceof Collection)) {
+                this.item = new Collection(this.item);
+            }
         }
     }
 </script>
