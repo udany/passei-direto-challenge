@@ -18,5 +18,12 @@ router.get('/:id', async function (req, res, next) {
     res.send(data);
 });
 
+router.post('/:id', async function (req, res, next) {
+    const obj = new Collection(req.body);
+    await CollectionModel.save(db, obj, ['name', 'description']);
+
+    res.send(obj);
+});
+
 module.exports.path = '/collection';
 module.exports.router = router;
