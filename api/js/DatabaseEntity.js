@@ -110,8 +110,38 @@ export class DatabaseModel {
         return result.length ? result[0] : null;
     }
 
+    static async deleteById(db, id) {
+        if (!Array.isArray(id)) id = [id];
+
+        const pks = this.primaryKeys();
+
+        let filters = [];
+
+        for (let [index, field] of pks.entries()) {
+            filters.push({
+                column: field.name,
+                values: id[index]
+            });
+        }
+
+        return this.delete(db, filters);
+    }
+
+    static async delete(db, filters) {
+        filters = filters.map(f => f instanceof DatabaseQueryComponent ? f : new DatabaseQueryCondition(f));
+
+        const where = new DatabaseQueryClause(filters, "AND");
+
+        const query = this.getDeleteQuery(where);
+        const params = where.getParams();
+
+        let [data] = await db.query(query, params);
+
+        return !!data.affectedRows;
+    }
+
     /**
-     * Returns a select query
+     * Returns the select query with the given params
      * @param {DatabaseQueryComponent} where
      * @param {String[]} fieldNames
      * @returns {string}
@@ -182,7 +212,15 @@ export class DatabaseModel {
             }
         }
 
-        return `UPDATE ${_e(this.table)} SET ${sets.join(', ')} WHERE ${where.join(', ')}`;
+        return `UPDATE ${_e(this.table)} SET ${sets.join(', ')} WHERE ${where.join(' AND ')}`;
+    }
+
+    static getDeleteQuery(where) {
+        if (!where) {
+            throw "Good luck erasing the db, not on my watch";
+        }
+
+        return `DELETE FROM ${_e(this.table)} WHERE ${where.getClause()}`;
     }
 
     static getCreateStatement() {
