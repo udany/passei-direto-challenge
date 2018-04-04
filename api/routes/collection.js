@@ -5,6 +5,7 @@ import CollectionModel from "../models/CollectionModel";
 import Collection from "../../shared/entities/Collection";
 
 import db from '../Database';
+import {Reply} from "../base/Reply";
 
 let router = express.Router();
 
@@ -52,6 +53,12 @@ router.post('/:id', async function (req, res, next) {
     }
 
     res.send(obj);
+});
+
+router.delete('/:id', async function (req, res, next) {
+    let data = await CollectionModel.deleteById(db, req.params.id);
+
+    res.send(new Reply(data));
 });
 
 module.exports.path = '/collection';

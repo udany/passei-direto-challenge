@@ -26,6 +26,14 @@
                                 <i class="fa fa-pencil"></i>
                                 Edit
                             </a>
+
+                            &nbsp;&middot;&nbsp;
+
+                            <a href="#" class="color-neutral" @click.prevent="remove" style="color: #bd0000">
+                                <i class="fa fa-remove"></i>
+                                Remove
+                            </a>
+
                         </b-col>
                     </b-row>
                 </div>
@@ -79,6 +87,15 @@
             edit() {
                 this.$router.push(`/collection/edit/${this.item.id}`);
             },
+            async remove() {
+                let {data} = await api.delete(`/collection/${this.item.id}`);
+
+                if (data.status) {
+                    this.$toast.success('Removed', {duration: 1000});
+
+                    this.back();
+                }
+            }
         },
         components: {
             SimpleCover,
