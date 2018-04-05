@@ -15,17 +15,8 @@
         </b-row>
 
         <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="0" title="Chill mix"></collection-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="1" title="Cozy by the fire"></collection-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="2" title="Party Hard"></collection-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <collection-cover :id="3" title="Countryside harkens"></collection-cover>
+            <b-col md="3" cols="6" class="mt-4" v-for="c in collections">
+                <collection-cover :value="c"></collection-cover>
             </b-col>
         </b-row>
 
@@ -56,13 +47,29 @@
     import AlbumCover from '~/components/AlbumCover.vue'
     import CollectionCover from '~/components/CollectionCover.vue'
 
+    import api from '~/plugins/api';
+    import Collection from "Shared/entities/Collection";
+
     export default {
         head: () => ({
             title: "Home"
         }),
+        data: () => ({
+            collections: []
+        }),
+        async asyncData () {
+            let { data } = await api.get(`/collection`);
+
+            return { collections: data }
+        },
         components: {
             AlbumCover,
             CollectionCover
+        },
+        created() {
+            if (this.collections.length) {
+                this.collections = this.collections.map(d => new Collection(d));
+            }
         }
     }
 </script>
