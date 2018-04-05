@@ -11,7 +11,7 @@
 
         <b-row>
             <b-col>
-                <h2 class="m-0">Popular Collections</h2>
+                <h2 class="m-0">Latest Collections</h2>
             </b-col>
         </b-row>
 
@@ -24,7 +24,7 @@
 
         <b-row>
             <b-col>
-                <h2 class="mb-0 mt-4">Popular Albums</h2>
+                <h2 class="mb-0 mt-4">Latest Albums</h2>
             </b-col>
         </b-row>
 
@@ -57,6 +57,8 @@
 
             let { data: albums } = await api.get(`/album`);
 
+            collections = collections.splice(-4);
+            albums = albums.splice(-4);
 
             return { collections, albums };
         },
