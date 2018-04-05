@@ -1,5 +1,3 @@
-import path from 'path';
-import fs from 'fs';
 import express from 'express';
 import CollectionModel from "../models/CollectionModel";
 import Collection from "../../shared/entities/Collection";

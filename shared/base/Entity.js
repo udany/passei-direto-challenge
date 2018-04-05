@@ -29,6 +29,8 @@ class Entity extends Emitter {
 
     FillFromArray(a) {
         if (!a) a = [];
+        if (a instanceof Entity) a = a.Serialize();
+
         let attributes = this.constructor.Attributes;
 
         for (let i = 0; i < attributes.length; i++) {

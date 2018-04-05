@@ -1,11 +1,9 @@
-import path from 'path';
-import fs from 'fs';
 import express from 'express';
 import AlbumModel from "../models/AlbumModel";
-import Collection from "../../shared/entities/Collection";
 
 import db from '../Database';
 import {Reply} from "../base/Reply";
+import Album from "../../shared/entities/Album";
 
 let router = express.Router();
 
@@ -22,7 +20,7 @@ router.get('/:id', async function (req, res, next) {
 });
 
 router.post('/:id', async function (req, res, next) {
-    const obj = new Collection(req.body);
+    const obj = new Album(req.body);
     await AlbumModel.save(db, obj, ['name', 'artist', 'releaseYear']);
 
     await AlbumModel.saveImage(db, obj);
