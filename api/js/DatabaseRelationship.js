@@ -57,11 +57,11 @@ export class DatabaseRelationship {
         this.order = order;
     }
 
-    select(obj) {}
+    async select(db, obj) {}
 
-    selectMany(objs) {}
+    async selectMany(db, objs) {}
 
-    save(obj) {}
+    async save(db, obj) {}
 
     readonly(v) { return this._setOrReturnKey('_readOnly', v) }
     autoload(v) { return this._setOrReturnKey('_autoload', v) }
@@ -100,5 +100,16 @@ export class DatabaseRelationshipOneToMany extends DatabaseRelationship{
         obj[this.property] = result;
 
         return result;
+    }
+
+    async save(db, obj) {
+        const id = obj[this.localKey];
+        const data = obj[this.property];
+
+        for (const item of data) {
+            item[this.externalForeignKey] = id;
+
+            await this.externalModel.save(db, item);
+        }
     }
 }

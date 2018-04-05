@@ -33,6 +33,8 @@ export class DatabaseModel {
         return this._setOrReturnKey('_insertWithId', v);
     }
 
+    // Main Operations
+
     static async save(db, obj, allowedFields = [], insert = false) {
         const pks = this.primaryKeys();
         const exists = pks.reduce((v, pk) => v && obj[pk.name], true);
@@ -59,11 +61,17 @@ export class DatabaseModel {
                 }
             }
 
+            await this.saveRelationships(db, obj);
+
             return result;
         } else {
             const query = this.getUpdateQuery(data);
 
-            return db.query(query, data);
+            let result = db.query(query, data);
+
+            await this.saveRelationships(db, obj);
+
+            return result;
         }
     }
 
@@ -95,14 +103,6 @@ export class DatabaseModel {
         let [rows] = await db.query(query, params);
 
         return rows.map(r => new this.entity(r));
-    }
-
-    static async selectRelationships(db, obj, relationships = null) {
-        if (!relationships) relationships = this.relationships.filter(r => r.autoload());
-
-        for (const relationship of relationships) {
-            await relationship.select(db, obj);
-        }
     }
 
     static async getById(db, id) {
@@ -160,6 +160,9 @@ export class DatabaseModel {
 
         return !!data.affectedRows;
     }
+
+
+    // QUERIES
 
     /**
      * Returns the select query with the given params
@@ -271,6 +274,25 @@ export class DatabaseModel {
 
     static primaryKeys() {
         return this.fields.filter(f => f.primaryKey);
+    }
+
+
+    // Relationships
+
+    static async selectRelationships(db, obj, relationships = null) {
+        if (!relationships) relationships = this.relationships.filter(r => r.autoload());
+
+        for (const relationship of relationships) {
+            await relationship.select(db, obj);
+        }
+    }
+
+    static async saveRelationships(db, obj, relationships = null) {
+        if (!relationships) relationships = this.relationships.filter(r => !r.readonly());
+
+        for (const relationship of relationships) {
+            await relationship.save(db, obj);
+        }
     }
 }
 
