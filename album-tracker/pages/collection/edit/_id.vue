@@ -96,7 +96,7 @@
 
                 <b-row class="clear" v-if="spotifyResults.length">
                     <b-col cols="6" class="mt-4" v-for="a in spotifyResults" :key="a.GetUId()">
-                        <album-cover :value="a" icon="plus" @action="addAlbum(a)"></album-cover>
+                        <album-cover :value="a" icon="plus" @action="addFromSpotify(a)"></album-cover>
                     </b-col>
                 </b-row>
             </b-col>
@@ -178,6 +178,20 @@
 
             addAlbum(a) {
                 this.item.albums.push(a);
+
+                this.$toast.success('Album added!', {duration: 1000});
+
+                this.toggleSearch();
+            },
+
+            async addFromSpotify(a) {
+                this.$toast.info('Importing from Spotify...', {duration: 3000});
+
+                let {data} = await api.get(`/album/spotify/${a.spotifyId}`);
+
+                let album = new Album(data);
+
+                this.item.albums.push(album);
 
                 this.$toast.success('Album added!', {duration: 1000});
 

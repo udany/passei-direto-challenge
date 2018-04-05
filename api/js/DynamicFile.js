@@ -45,7 +45,9 @@ class DynamicFile {
             let request = requester.get(url, function(response) {
                 response.pipe(file);
 
-                resolve();
+                response.on('end', () => {
+                    resolve();
+                });
             });
         });
     }

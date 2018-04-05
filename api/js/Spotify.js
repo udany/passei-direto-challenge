@@ -56,7 +56,6 @@ const spotify = {
         album.artist = data.artists.map(x => x.name).join(', ');
         album.name = data.name;
         album.releaseYear = data.release_date.split('-')[0];
-        album.hasImage = true;
         album.spotifyImage = data.images[0].url;
         album.spotifyId = data.id;
 
@@ -69,7 +68,7 @@ const spotify = {
                 track.name = trackData.name;
                 track.duration = trackData.duration_ms;
                 track.spotifyId = trackData.id;
-                track.previewUrl = trackData.preview_url;
+                track.previewUrl = trackData.preview_url || '';
 
                 album.tracks.push(track);
             }

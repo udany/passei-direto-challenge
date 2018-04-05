@@ -51,6 +51,8 @@ router.get('/spotify/:id', async function (req, res, next) {
         if (spotifyData){
             let album = spotify.toAlbum(spotifyData);
 
+            album.hasImage = true;
+
             await AlbumModel.save(db, album);
 
             await AlbumModel.imageFile.saveFromUrl(album, album.spotifyImage);
