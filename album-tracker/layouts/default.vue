@@ -19,9 +19,9 @@
                 <b-navbar-nav class="ml-auto">
 
                     <!-- Search -->
-                    <b-nav-form>
+                    <b-nav-form @submit.prevent="search">
                         <b-input-group>
-                            <b-form-input size="sm" type="text" placeholder="Search"/>
+                            <b-form-input size="sm" type="text" placeholder="Search" v-model="searchQuery"/>
                             <b-input-group-append>
                                 <b-button size="sm" variant="secondary" type="submit">
                                     <i class="fa fa-search"></i>
@@ -43,6 +43,19 @@
         head: () => ({
             titleTemplate: "Album Tracker - %s"
         }),
+        data: () => ({
+            searchQuery: ''
+        }),
+        methods: {
+            search() {
+                this.$router.push({
+                    path: "/search",
+                    query: {
+                        q: this.searchQuery
+                    }
+                })
+            }
+        }
     };
 </script>
 
