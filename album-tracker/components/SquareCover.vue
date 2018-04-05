@@ -3,7 +3,7 @@
         <div class="bck" :style="{backgroundImage: 'url('+image+')'}"></div>
         <div class="bck blur" :style="{backgroundImage: 'url('+image+')'}"></div>
 
-        <div class="title p-2 pt-4">
+        <div class="title p-2 pt-4" v-if="showDetails">
             <slot name="title">
                 <h4 class="m-0">{{title}}</h4>
             </slot>
@@ -34,6 +34,10 @@
             title: {
                 type: String,
                 default: ''
+            },
+            showDetails: {
+                type: Boolean,
+                default: true
             }
         },
         methods: {

@@ -1,10 +1,10 @@
 <template>
-    <square-cover class="album-cover" :image="'/mock/album/'+id+'.jpg'" v-bind="$attrs" v-on="$listeners"
-                  @action="mainAction">
+    <square-cover class="album-cover" :image="value.getImageUrl()" v-bind="$attrs" v-on="$listeners"
+                  @action="mainAction" v-if="value">
         <template slot="title">
-            <h5 class="m-0">{{title}}</h5>
+            <h5 class="m-0">{{value.name}}</h5>
 
-            <span class="m-0">{{artist}}</span>
+            <span class="m-0">{{value.artist}}</span>
         </template>
         <slot name="actions" slot="actions">
             <!--<b-button size="sm" variant="success" type="submit">-->
@@ -16,33 +16,26 @@
 
 <script>
     import SquareCover from './SquareCover.vue'
+    import Album from 'Shared/entities/Album'
 
     export default {
         props: {
-            id: {
-                type: Number
-            },
-            title: {
-                type: String,
-                default: ''
-            },
-            artist: {
-                type: String,
-                default: ''
+            value: {
+                type: Album
             }
+        },
+        components: {
+            SquareCover
         },
         methods: {
             mainAction() {
                 if (this.$listeners['action']) {
                     this.$listeners['action']();
                 } else {
-                    const {id} = this;
-                    this.$router.push(`/album/${id}`);
+                    const {value} = this;
+                    this.$router.push(`/album/${value.id}`);
                 }
             }
-        },
-        components: {
-            SquareCover
         }
     }
 </script>

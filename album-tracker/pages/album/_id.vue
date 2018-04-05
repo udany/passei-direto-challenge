@@ -1,13 +1,8 @@
 <template>
-    <div class="container my-4">
+    <div class="container my-4" v-if="item">
         <b-row>
             <b-col>
                 <h4 class="mb-0 mt-4">
-                    <a href="#" class="color-neutral float-right" @click.prevent="edit">
-                        <i class="fa fa-pencil"></i>
-                        Edit
-                    </a>
-
                     <a href="#" class="color-neutral" @click.prevent="back">
                         <i class="fa fa-chevron-left"></i>
                         Back
@@ -18,18 +13,28 @@
 
         <b-row class="mt-4">
             <b-col md="6">
-                <album-cover :id="1" title="" artist="" icon="play" @action="play">
-                    <template slot="actions">
-                        &nbsp;
-                    </template>
-                </album-cover>
+                <album-cover :value="item" :showDetails="false" icon="play" @action="play"></album-cover>
+
+                <p class="my-2 text-right">
+                    <a href="#" class="color-neutral" @click.prevent="edit">
+                        <i class="fa fa-pencil"></i>&nbsp;
+                        Edit
+                    </a>
+
+                    &nbsp;&middot;&nbsp;
+
+                    <a href="#" class="color-neutral" @click.prevent="remove" style="color: #bd0000">
+                        <i class="fa fa-remove"></i>
+                        Remove
+                    </a>
+                </p>
             </b-col>
             <b-col md="6">
                 <h1>
-                    Back to Black
+                    {{item.name}}
                 </h1>
                 <h4>
-                    Amy Winehouse
+                    {{item.artist}}
                 </h4>
 
                 <!-- Tracks -->
@@ -115,15 +120,30 @@
 </template>
 
 <script>
-    import AlbumCover from '~/components/AlbumCover.vue'
+    import AlbumCover from '~/components/AlbumCover.vue';
+
+    import api from '~/plugins/api';
+    import Album from "Shared/entities/Album";
 
     export default {
-        head: () => ({
-            title: "Back to Black"
-        }),
+        head() {
+            return {
+                title: this.item ? this.item.name : 'Loading...'
+            };
+        },
         data: () => ({
-            currentLetter: "A"
+            item: null
         }),
+        async asyncData({params}) {
+            let {data} = await api.get(`/album/${params.id}`);
+
+            return {item: new Album(data)}
+        },
+
+        components: {
+            AlbumCover
+        },
+
         methods: {
             back() {
                 this.$router.go(-1);
@@ -135,8 +155,10 @@
 
             }
         },
-        components: {
-            AlbumCover
+        created() {
+            if (this.item) {
+                this.item = new Album(this.item);
+            }
         }
     }
 </script>
