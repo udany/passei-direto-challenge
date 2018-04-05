@@ -3,16 +3,17 @@ import {DatabaseQueryCondition} from "./DatabaseQueryComponent";
 
 /**
  * @name DatabaseRelationship
+ *
  * @property {Function} model The model
  * @property {Function} externalModel The external model
  *
  * @property {string} property The property the relationship is stored within the current model
  *
  * @property {string} localKey A field that identifies the current model within itself
- * @property {string} localForeignKey A field that identifies the external model within the current model
+ * @property {string} localForeignKey A field that identifies the current model within the external model
  *
  * @property {string} externalKey A field that identifies the external model within itself
- * @property {string} externalForeignKey A field that identifies the current model within the external model
+ * @property {string} externalForeignKey A field that identifies the external model within the current model
  *
  * @property {Boolean} _readOnly Means the current relationship will only ever query data and never attempt to update it automatically
  * @property {Boolean} _autoload Means the current relationship will always be queried when querying it's own model
@@ -72,17 +73,15 @@ export class DatabaseRelationship {
 DatabaseRelationship.prototype._setOrReturnKey = setOrReturnKey;
 
 
-
-
 export class DatabaseRelationshipOneToMany extends DatabaseRelationship{
     constructor({
         model,
         externalModel,
         property,
         localKey = 'id',
-        externalForeignKey
+        localForeignKey
     }) {
-        super({model, externalModel, property, localKey, externalForeignKey})
+        super({model, externalModel, property, localKey, localForeignKey})
     }
 
     async select(db, obj) {
@@ -90,8 +89,89 @@ export class DatabaseRelationshipOneToMany extends DatabaseRelationship{
 
         const filters = this.filters.concat([
             new DatabaseQueryCondition({
-                column: this.externalForeignKey,
+                column: this.localForeignKey,
                 values: id
+            })
+        ]);
+
+        const result = await this.externalModel.select(db, filters, this.order);
+
+        obj[this.property] = result;
+
+        return result;
+    }
+
+    async save(db, obj) {
+        const id = obj[this.localKey];
+        const data = obj[this.property];
+
+        for (const item of data) {
+            item[this.localForeignKey] = id;
+
+            await this.externalModel.save(db, item);
+        }
+    }
+}
+
+
+/**
+ * @name DatabaseRelationshipManyToMany
+ * @extends DatabaseRelationship
+ *
+ * @property {Function} intermediaryModel The intermediary model between both models
+ *
+ * @property {string} localKey A field that identifies the current model within itself
+ * @property {string} localForeignKey A field that identifies the current model within the intermediary model
+ *
+ * @property {string} externalKey A field that identifies the external model within itself
+ * @property {string} externalForeignKey A field that identifies the external model within the intermediary model
+ */
+export class DatabaseRelationshipManyToMany extends DatabaseRelationship{
+    constructor({
+        model,
+        intermediaryModel,
+        externalModel,
+        property,
+        localKey = 'id',
+        localForeignKey,
+        externalKey = 'id',
+        externalForeignKey
+    }) {
+        super({
+            model,
+            externalModel,
+            property,
+
+            localKey,
+            localForeignKey,
+
+            externalKey,
+            externalForeignKey
+        });
+
+        this.intermediaryModel = intermediaryModel;
+    }
+
+    async select(db, obj) {
+        const id = obj[this.localKey];
+
+        let filters = [
+            new DatabaseQueryCondition({
+                column: this.localForeignKey,
+                values: id
+            })
+        ];
+
+        const intermediaryResult = await this.intermediaryModel.select(db, filters);
+
+        const externalIds = intermediaryResult.map(r => r[this.externalForeignKey]);
+
+        filters = this.filters.concat([
+            new DatabaseQueryCondition({
+                column: this.externalKey,
+                operator: "IN",
+                values: `(${externalIds.join(', ')})`,
+                bound: false
             })
         ]);
 
