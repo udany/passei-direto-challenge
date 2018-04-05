@@ -14,7 +14,8 @@ export class DatabaseModel {
         table,
         entity = null,
         fields = [],
-        relationships = []
+        relationships = [],
+        insertWithId = false
     }) {
         this.table = table;
         this.entity = entity;
@@ -24,7 +25,7 @@ export class DatabaseModel {
 
         this.relationships = relationships;
 
-        this._insertWithId = false;
+        this._insertWithId = insertWithId;
 
         return this;
     }

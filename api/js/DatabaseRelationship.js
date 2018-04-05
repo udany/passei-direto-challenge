@@ -164,6 +164,8 @@ export class DatabaseRelationshipManyToMany extends DatabaseRelationship{
 
         const intermediaryResult = await this.intermediaryModel.select(db, filters);
 
+        if (!intermediaryResult.length) return [];
+
         const externalIds = intermediaryResult.map(r => r[this.externalForeignKey]);
 
         filters = this.filters.concat([
@@ -186,10 +188,28 @@ export class DatabaseRelationshipManyToMany extends DatabaseRelationship{
         const id = obj[this.localKey];
         const data = obj[this.property];
 
-        for (const item of data) {
-            item[this.externalForeignKey] = id;
+        let intermediaryData = data.map(d => {
+            let obj = {};
 
-            await this.externalModel.save(db, item);
+            obj[this.localForeignKey] = id;
+            obj[this.externalForeignKey] = d[this.externalKey];
+
+            return obj;
+        });
+
+        if (this.intermediaryModel.entity) intermediaryData = intermediaryData.map(d => new this.intermediaryModel.entity(d));
+
+        let filters = [
+            new DatabaseQueryCondition({
+                column: this.localForeignKey,
+                values: id
+            })
+        ];
+
+        await this.intermediaryModel.delete(db, filters);
+
+        for (const item of intermediaryData) {
+            await this.intermediaryModel.save(db, item, [], true);
         }
     }
 }
