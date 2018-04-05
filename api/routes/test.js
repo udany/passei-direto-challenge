@@ -5,11 +5,13 @@ import Collection from "../../shared/entities/Collection";
 import db from '../Database';
 import {DatabaseQueryCondition} from "../js/DatabaseQueryComponent";
 import AlbumModel from "../models/AlbumModel";
+import AlbumTrackModel from "../models/AlbumTrackModel";
+import CollectionAlbumModel from "../models/CollectionAlbumModel";
 
 let router = express.Router();
 
 router.get('/', async function (req, res, next) {
-    res.send(AlbumModel.getCreateStatement());
+    res.send(CollectionAlbumModel.getCreateStatement());
 });
 
 router.get('/i', async function (req, res, next) {
