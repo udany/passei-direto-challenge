@@ -1,6 +1,9 @@
 import Collection from "../../shared/entities/Collection";
 import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseModel";
 import DynamicFile from "../js/DynamicFile";
+import {DatabaseRelationshipManyToMany} from "../js/DatabaseRelationship";
+import CollectionAlbumModel from "./CollectionAlbumModel";
+import AlbumModel from "./AlbumModel";
 
 class CollectionModel extends DatabaseModel {
     /**
@@ -54,6 +57,18 @@ CollectionModel
                 .setDefault(0),
 
             new DatabaseField({name: 'imageSeed', type: 'int', length: 11}),
+        ],
+
+        relationships: [
+            (new DatabaseRelationshipManyToMany({
+                model: CollectionModel,
+                intermediaryModel: CollectionAlbumModel,
+                externalModel: AlbumModel,
+
+                property: 'albums',
+                localForeignKey: 'collectionId',
+                externalForeignKey: 'albumId'
+            })).autoload(true).readonly(false)
         ]
     });
 

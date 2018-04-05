@@ -76,7 +76,7 @@ AlbumModel
                 model: AlbumModel,
                 externalModel: AlbumTrackModel,
                 property: 'tracks',
-                externalForeignKey: 'albumId'
+                localForeignKey: 'albumId'
             })).autoload(true).readonly(false)
         ]
     });
