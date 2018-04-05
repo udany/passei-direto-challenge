@@ -1,5 +1,7 @@
 import path from 'path';
 import fs from 'fs';
+import http from 'http';
+import https from 'https';
 
 class DynamicFile {
     constructor(fileName, basePath = "./") {
@@ -29,6 +31,23 @@ class DynamicFile {
         const destination = this.getFilePath(obj);
 
         fs.renameSync(source, destination);
+    }
+
+    async saveFromUrl(obj, url) {
+        // Move new image
+        const destination = this.getFilePath(obj);
+
+        let requester = url.indexOf('https') === 0 ? https : http;
+
+        return new Promise((resolve, reject) => {
+            let file = fs.createWriteStream(destination);
+
+            let request = requester.get(url, function(response) {
+                response.pipe(file);
+
+                resolve();
+            });
+        });
     }
 
     static getTempFilePath(tempFile) {

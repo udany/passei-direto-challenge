@@ -1,5 +1,6 @@
 import cfg from '../config';
 import Album from "../../shared/entities/Album";
+import AlbumTrack from "../../shared/entities/AlbumTrack";
 var SpotifyWebApi = require('spotify-web-api-node');
 
 const spotify = {
@@ -55,8 +56,24 @@ const spotify = {
         album.artist = data.artists.map(x => x.name).join(', ');
         album.name = data.name;
         album.releaseYear = data.release_date.split('-')[0];
+        album.hasImage = true;
         album.spotifyImage = data.images[0].url;
         album.spotifyId = data.id;
+
+        if (data.tracks && data.tracks.items && data.tracks.items.length) {
+            let tracks = data.tracks.items;
+
+            for (let trackData of tracks) {
+                let track = new AlbumTrack();
+                track.number = trackData.track_number;
+                track.name = trackData.name;
+                track.duration = trackData.duration_ms;
+                track.spotifyId = trackData.id;
+                track.previewUrl = trackData.preview_url;
+
+                album.tracks.push(track);
+            }
+        }
 
         return album;
     }

@@ -6,6 +6,8 @@ import {Reply} from "../base/Reply";
 import Album from "../../shared/entities/Album";
 import {DatabaseQueryClause, DatabaseQueryCondition} from "../js/DatabaseQueryComponent";
 
+import spotify from '../js/Spotify';
+
 let router = express.Router();
 
 router.get('/', async function (req, res, next) {
@@ -31,6 +33,33 @@ router.get('/search', async function (req, res, next) {
             }),
         ], "OR")
     ]);
+
+    res.send(data);
+});
+
+router.get('/spotify/:id', async function (req, res, next) {
+    let data = await AlbumModel.select(db, [{
+        column: 'spotifyId',
+        values: req.params.id
+    }]);
+
+    if (!data.length) {
+        await spotify.checkAuth();
+
+        let {body: spotifyData} = await spotify.api.getAlbum(req.params.id);
+
+        if (spotifyData){
+            let album = spotify.toAlbum(spotifyData);
+
+            await AlbumModel.save(db, album);
+
+            await AlbumModel.imageFile.saveFromUrl(album, album.spotifyImage);
+
+            data = album;
+        }
+    } else {
+        data = data[0];
+    }
 
     res.send(data);
 });
