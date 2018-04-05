@@ -13,7 +13,9 @@ CollectionAlbumModel
 
             new DatabaseField({name: 'albumId', type: 'int', length: 11})
                 .setPrimaryKey(true),
-        ]
+        ],
+
+        insertWithId: true
     });
 
 
