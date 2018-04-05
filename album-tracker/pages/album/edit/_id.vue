@@ -16,16 +16,14 @@
                 <!-- Main Info -->
 
                 <b-form-group label="Album Title:">
-                    <b-form-input
-                            value="Back to Black"
+                    <b-form-input v-model="item.name"
                             placeholder="Title">
                     </b-form-input>
                 </b-form-group>
 
 
                 <b-form-group label="Album Artist:">
-                    <b-form-input
-                            value="Amy Winehouse"
+                    <b-form-input v-model="item.artist"
                             placeholder="Artist">
                     </b-form-input>
                 </b-form-group>
@@ -34,10 +32,10 @@
 
                     <b-row>
                         <b-col cols="6">
-                            <simple-cover image="/mock/album/1.jpg"></simple-cover>
+                            <simple-cover :image="item.getImageUrl()" v-if="item.hasImage || item.tempImage"></simple-cover>
                         </b-col>
                         <b-col>
-                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"></file-uploader>
+                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'" @upload-finish="uploadedImage"></file-uploader>
 
                             <p class="text-center text-muted mt-2">
                                 You may drag a file to the button
@@ -151,6 +149,14 @@
                 </table>
             </b-col>
         </b-row>
+
+        <b-row>
+            <b-col class="mt-4 text-right">
+                <b-button variant="success" @click="save">
+                    Save <i class="fa fa-check"></i>
+                </b-button>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -159,25 +165,58 @@
     import AlbumCover from '~/components/AlbumCover.vue'
     import FileUploader from '~/components/FileUploader.vue'
 
+    import api from '~/plugins/api';
+    import Album from "Shared/entities/Album";
+
     export default {
-        head: () => ({
-            title: "Back to Black | Edit"
-        }),
+        head() {
+            return {
+                title: this.item ? this.item.name + ' | Edit' : 'Loading...'
+            };
+        },
         data: () => ({
-            currentLetter: "A"
+            item: null
         }),
+        async asyncData({params}) {
+            if (!params.id) {
+                return {item: new Album()}
+            } else {
+                let {data} = await api.get(`/album/${params.id}`);
+
+                return {item: new Album(data)}
+            }
+        },
+
         methods: {
             back() {
                 this.$router.go(-1);
             },
-            play() {
 
-            }
+            async save() {
+                let {data} = await api.post(`/album/${this.item.id}`, this.item);
+
+                if (data.id) {
+                    this.$toast.success('Saved', {duration: 1000});
+
+                    this.back();
+                }
+            },
+
+            uploadedImage(fu) {
+                if (fu.response && fu.response.status) {
+                    this.item.tempImage = fu.response.data;
+                }
+            },
         },
         components: {
             SimpleCover,
             AlbumCover,
             FileUploader
+        },
+        created() {
+            if (this.item && !(this.item instanceof Album)) {
+                this.item = new Album(this.item);
+            }
         }
     }
 </script>
