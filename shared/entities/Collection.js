@@ -1,10 +1,13 @@
 import Entity from '../base/Entity';
+import Album from "./Album";
 
 /**
  * @name Collection
  * @property {number} id
  * @property {string} name
  * @property {string} description
+ *
+ * @property {Album[]} albums
  *
  * @property {string} tempImage
  * @property {boolean} hasImage
@@ -30,6 +33,8 @@ Collection.Attributes = [
     new Entity.Attributes.Integer('id'),
     new Entity.Attributes.String('name'),
     new Entity.Attributes.String('description'),
+
+    new Entity.Attributes.EntityList('albums', Album),
 
     // Cover image
     new Entity.Attributes.String('tempImage'),
