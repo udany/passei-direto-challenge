@@ -3,84 +3,59 @@
         <b-row>
             <b-col>
                 <h1 class="my-4">
+                    <b-button variant="success" class="float-right mt-2" @click="add">
+                        <i class="fa fa-plus"></i>
+                    </b-button>
                     Albums
                 </h1>
             </b-col>
         </b-row>
 
-        <b-row>
-            <b-col class="letter-links text-center">
-                <a href="#" @click.prevent="currentLetter = nthLetter(n)" class="letter-link" v-for="n in 25" :key="nthLetter(n)" :class="{active: currentLetter === nthLetter(n)}">
-                    {{nthLetter(n)}}
-                </a>
+        <letter-sorter :data="albums" :sorters="[sorter]" property="name">
+            <b-col  md="3" cols="6" class="mt-4"
+                    slot="item" slot-scope="data">
+                <album-cover :value="data.item" icon="chevron-right"></album-cover>
             </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">A</h2>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="0" title="Appetite for Destruction" artist="Guns 'n Roses"></album-cover>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col>
-                <h2 class="mb-0 mt-4">B</h2>
-            </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="1" title="Back to Black" artist="Amy Winehouse"></album-cover>
-            </b-col>
-        </b-row>
+        </letter-sorter>
     </div>
 </template>
 
 <script>
     import AlbumCover from '~/components/AlbumCover.vue'
+    import LetterSorter from '~/components/LetterSorter.vue'
+
+    import Album from 'Shared/entities/Album'
+    import Sorter from 'Shared/base/Sorter'
+
+    import api from '~/plugins/api';
 
     export default {
         head: () => ({
             title: "Album List"
         }),
         data: () => ({
-            currentLetter: "A"
+            albums: [],
+            sorter: Sorter.fromAttribute(Album.GetAttribute('name'), 1).caseInsensitive()
         }),
+        async asyncData ({ params }) {
+            let { data } = await api.get(`/album`);
+
+            return { albums: data }
+        },
         methods: {
-            nthLetter(n) {
-                return String.fromCharCode(n + 64);
+            add() {
+                this.$router.push(`/album/edit/0`);
             }
         },
         components: {
-            AlbumCover
+            AlbumCover,
+            LetterSorter
+        },
+        created() {
+            this.albums = this.albums.map(d => new Album(d));
         }
     }
 </script>
 
 <style>
-    .letter-links {
-
-    }
-
-    a.letter-link {
-        color: #dbe1ec;
-        display: inline-block;
-        padding: .5em;
-        font-size: 1.5em;
-
-        opacity: .7;
-        transform: scale(1);
-        transition: all .3s;
-    }
-
-    a.letter-link.active, a.letter-link:hover {
-        opacity: 1;
-        transform: scale(1.1);
-    }
 </style>
