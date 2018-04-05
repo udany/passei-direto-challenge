@@ -88,6 +88,8 @@
                 this.$router.push(`/collection/edit/${this.item.id}`);
             },
             async remove() {
+                if (!confirm('Are you sure?')) return;
+
                 let {data} = await api.delete(`/collection/${this.item.id}`);
 
                 if (data.status) {
