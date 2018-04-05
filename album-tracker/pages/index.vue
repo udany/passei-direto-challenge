@@ -8,6 +8,7 @@
             </b-col>
         </b-row>
 
+
         <b-row>
             <b-col>
                 <h2 class="m-0">Popular Collections</h2>
@@ -15,10 +16,11 @@
         </b-row>
 
         <b-row>
-            <b-col md="3" cols="6" class="mt-4" v-for="c in collections">
+            <b-col md="3" cols="6" class="mt-4" v-for="c in collections" :key="c.id">
                 <collection-cover :value="c"></collection-cover>
             </b-col>
         </b-row>
+
 
         <b-row>
             <b-col>
@@ -27,17 +29,8 @@
         </b-row>
 
         <b-row>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="0" title="Appetite for Destruction" artist="Guns 'n Roses"></album-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="1" title="Back to Black" artist="Amy Winehouse"></album-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="2" title="The Dark Knight OST" artist="Hans Zimmer"></album-cover>
-            </b-col>
-            <b-col md="3" cols="6" class="mt-4">
-                <album-cover :id="3" title="Jinsei × Boku" artist="ONE OK ROCK"></album-cover>
+            <b-col md="3" cols="6" class="mt-4" v-for="a in albums" :key="a.id">
+                <album-cover :value="a"></album-cover>
             </b-col>
         </b-row>
     </div>
@@ -49,27 +42,31 @@
 
     import api from '~/plugins/api';
     import Collection from "Shared/entities/Collection";
+    import Album from "Shared/entities/Album";
 
     export default {
         head: () => ({
             title: "Home"
         }),
         data: () => ({
+            albums: [],
             collections: []
         }),
         async asyncData () {
-            let { data } = await api.get(`/collection`);
+            let { data: collections } = await api.get(`/collection`);
 
-            return { collections: data }
+            let { data: albums } = await api.get(`/album`);
+
+
+            return { collections, albums };
         },
         components: {
             AlbumCover,
             CollectionCover
         },
         created() {
-            if (this.collections.length) {
-                this.collections = this.collections.map(d => new Collection(d));
-            }
+            this.collections = this.collections.map(d => new Collection(d));
+            this.albums = this.albums.map(d => new Album(d));
         }
     }
 </script>
