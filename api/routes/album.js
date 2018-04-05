@@ -19,6 +19,7 @@ router.get('/:id', async function (req, res, next) {
     res.send(data);
 });
 
+// Save
 router.post('/:id', async function (req, res, next) {
     const obj = new Album(req.body);
     await AlbumModel.save(db, obj, ['name', 'artist', 'releaseYear']);

@@ -1,4 +1,4 @@
-import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseEntity";
+import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseModel";
 import AlbumTrack from "../../shared/entities/AlbumTrack";
 
 class AlbumTrackModel extends DatabaseModel {

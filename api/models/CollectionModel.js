@@ -1,5 +1,5 @@
 import Collection from "../../shared/entities/Collection";
-import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseEntity";
+import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseModel";
 import DynamicFile from "../js/DynamicFile";
 
 class CollectionModel extends DatabaseModel {

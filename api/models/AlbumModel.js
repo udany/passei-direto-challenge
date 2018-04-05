@@ -1,4 +1,4 @@
-import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseEntity";
+import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseModel";
 import Album from "../../shared/entities/Album";
 import DynamicFile from "../js/DynamicFile";
 import {DatabaseRelationshipOneToMany} from "../js/DatabaseRelationship";

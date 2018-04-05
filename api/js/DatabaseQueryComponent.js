@@ -1,4 +1,4 @@
-import {dbBacktick} from "./DatabaseEntity";
+import {dbBacktick} from "./DatabaseModel";
 
 export class DatabaseQueryComponent {
     getClause() {
