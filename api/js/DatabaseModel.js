@@ -12,7 +12,7 @@ export class DatabaseModel {
 
     static config({
         table,
-        entity,
+        entity = null,
         fields = [],
         relationships = []
     }) {
@@ -102,7 +102,7 @@ export class DatabaseModel {
 
         let [rows] = await db.query(query, params);
 
-        return rows.map(r => new this.entity(r));
+        return this.entity ? rows.map(r => new this.entity(r)) : rows;
     }
 
     static async getById(db, id) {
