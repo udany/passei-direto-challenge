@@ -1,4 +1,5 @@
 import Entity from '../base/Entity';
+import AlbumTrack from "./AlbumTrack";
 
 /**
  * @name Album
@@ -37,6 +38,8 @@ Album.Attributes = [
     new Entity.Attributes.String('artist'),
     new Entity.Attributes.Integer('releaseYear'),
     new Entity.Attributes.Integer('popularity'),
+
+    new Entity.Attributes.EntityList('tracks', AlbumTrack),
 
     new Entity.Attributes.String('spotifyId'),
 
