@@ -1,3 +1,27 @@
+#### Album Tracker client
+# dependencies
+album-tracker/node_modules
+
+# logs
+album-tracker/npm-debug.log
+
+# Nuxt build
+album-tracker/.nuxt
+
+# Nuxt generate
+album-tracker/dist
+
+#### Album Tracker API
+# dependencies
+api/node_modules
+
+# logs
+api/npm-debug.log
+
+#### Album Tracker Shared
+# dependencies
+shared/node_modules
+
 # IDE
 .idea
 .idea/*
