@@ -33,7 +33,7 @@
                             <simple-cover :image="item.getImageUrl()" v-if="item.hasImage || item.tempImage"></simple-cover>
                         </b-col>
                         <b-col>
-                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'"  @upload-finish="uploadedImage"></file-uploader>
+                            <file-uploader class="btn-sm" :url="'http://127.0.0.1:3001/upload/'" @upload-finish="uploadedImage"></file-uploader>
 
                             <p class="text-center text-muted mt-2">
                                 You may drag a file to the button
@@ -106,12 +106,10 @@
                 return {item: new Collection(data)}
             }
         },
+
         methods: {
             back() {
                 this.$router.go(-1);
-            },
-            play() {
-
             },
 
             async save() {
