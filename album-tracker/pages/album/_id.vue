@@ -56,60 +56,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-for="t in item.tracks" :key="t.id">
                             <td>
-                                1
+                                {{t.number}}
                             </td>
                             <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
+                                <i class="fa fa-play mt-1" v-if="t.previewUrl"></i>
                             </td>
                             <td>
-                                Rehab
+                                {{t.name}}
                             </td>
                             <td>
-                                3:34
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
-                            </td>
-                            <td>
-                                You Know I'm No Good
-                            </td>
-                            <td>
-                                4:17
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                3
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
-                            </td>
-                            <td>
-                                Me & Mr Jones
-                            </td>
-                            <td>
-                                2:32
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                4
-                            </td>
-                            <td class="text-sm">
-                                <i class="fa fa-play mt-1"></i>
-                            </td>
-                            <td>
-                                Just Friends
-                            </td>
-                            <td>
-                                3:12
+                                {{t.getDurationString()}}
                             </td>
                         </tr>
                     </tbody>

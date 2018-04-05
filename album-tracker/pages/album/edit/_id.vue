@@ -84,7 +84,7 @@
                                 <td>
                                     {{t.name}}
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     {{t.getDurationString()}}
                                 </td>
                             </template>
