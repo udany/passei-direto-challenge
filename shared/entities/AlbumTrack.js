@@ -18,7 +18,7 @@ export class AlbumTrack extends Entity {
         let min = Math.floor(sec/60);
         sec = sec % 60;
 
-        return `${min}:${sec.pad(1)}`;
+        return `${min}:${sec.pad(2)}`;
     }
 }
 

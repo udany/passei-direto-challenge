@@ -180,3 +180,23 @@ table.table td {
 .clear {
     clear: both;
 }
+
+
+.discreet-form {}
+
+.discreet-form input {
+    background: rgba(0, 0, 0, 0.1);
+    color: white;
+    border: none;
+    border-bottom: 1px solid #ccc;
+
+    margin: 0;
+    width: 100%;
+
+    transition: all .3s;
+}
+.discreet-form input:focus {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #eee;
+    outline: none !important;
+}
