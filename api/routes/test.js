@@ -4,13 +4,12 @@ import Collection from "../../shared/entities/Collection";
 
 import db from '../Database';
 import {DatabaseQueryCondition} from "../js/DatabaseQueryComponent";
+import AlbumModel from "../models/AlbumModel";
 
 let router = express.Router();
 
 router.get('/', async function (req, res, next) {
-
-
-    res.send(CollectionModel.getSelectQuery());
+    res.send(AlbumModel.getCreateStatement());
 });
 
 router.get('/i', async function (req, res, next) {

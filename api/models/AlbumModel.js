@@ -1,9 +1,40 @@
 import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseEntity";
 import Album from "../../shared/entities/Album";
+import DynamicFile from "../js/DynamicFile";
 
 class AlbumModel extends DatabaseModel {
+    /**
+     * Saves the cover image if tempImage is set
+     * @param {Object} db
+     * @param {Collection} obj
+     * @returns {Promise.<boolean>}
+     */
+    static async saveImage(db, obj) {
+        if (obj.id && obj.tempImage) {
+            // Delete current image
+            this.imageFile.remove(obj);
 
+            // Update info
+            obj.imageSeed = DynamicFile.getModificationTime(DynamicFile.getTempFilePath(obj.tempImage));
+            obj.hasImage = true;
+
+            // Move new image
+            this.imageFile.save(obj, obj.tempImage);
+
+            // Save data
+            await this.save(db, obj, ['imageSeed', 'hasImage']);
+
+            obj.tempImage = '';
+
+            return true;
+        }
+
+        return false;
+
+    }
 }
+
+AlbumModel.imageFile = new DynamicFile(o => o.id + '_' + o.imageSeed, 'album');
 
 AlbumModel
     .config({
