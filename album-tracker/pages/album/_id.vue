@@ -61,7 +61,9 @@
                                 {{t.number}}
                             </td>
                             <td class="text-sm">
-                                <i class="fa fa-play mt-1" v-if="t.previewUrl"></i>
+                                <a :href="t.previewUrl" target="_blank" v-if="t.previewUrl" class="color-neutral">
+                                    <i class="fa fa-play mt-1"></i>
+                                </a>
                             </td>
                             <td>
                                 {{t.name}}
