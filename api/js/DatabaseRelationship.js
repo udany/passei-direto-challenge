@@ -79,7 +79,7 @@ export class DatabaseRelationshipOneToMany extends DatabaseRelationship{
         model,
         externalModel,
         property,
-        localKey = 'Id',
+        localKey = 'id',
         externalForeignKey
     }) {
         super({model, externalModel, property, localKey, externalForeignKey})

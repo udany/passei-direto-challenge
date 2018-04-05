@@ -75,7 +75,7 @@ AlbumModel
             (new DatabaseRelationshipOneToMany({
                 model: AlbumModel,
                 externalModel: AlbumTrackModel,
-                property: 'albums',
+                property: 'tracks',
                 externalForeignKey: 'albumId'
             })).autoload(true).readonly(false)
         ]

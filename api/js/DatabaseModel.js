@@ -97,7 +97,7 @@ export class DatabaseModel {
         return rows.map(r => new this.entity(r));
     }
 
-    static async loadRelationships(db, obj, relationships = null) {
+    static async selectRelationships(db, obj, relationships = null) {
         if (!relationships) relationships = this.relationships.filter(r => r.autoload());
 
         for (const relationship of relationships) {
@@ -120,7 +120,15 @@ export class DatabaseModel {
 
         let result = await this.select(db, filters);
 
-        return result.length ? result[0] : null;
+        if (result.length) {
+            result = result[0];
+
+            await this.selectRelationships(db, result);
+
+            return result;
+        }
+
+        return null;
     }
 
     static async deleteById(db, id) {
