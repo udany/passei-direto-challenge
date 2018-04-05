@@ -4,11 +4,33 @@ import AlbumModel from "../models/AlbumModel";
 import db from '../Database';
 import {Reply} from "../base/Reply";
 import Album from "../../shared/entities/Album";
+import {DatabaseQueryClause, DatabaseQueryCondition} from "../js/DatabaseQueryComponent";
 
 let router = express.Router();
 
 router.get('/', async function (req, res, next) {
     let data = await AlbumModel.select(db);
+
+    res.send(data);
+});
+
+router.get('/search', async function (req, res, next) {
+    let query = req.query.q;
+
+    let data = await AlbumModel.select(db, [
+        new DatabaseQueryClause([
+            new DatabaseQueryCondition({
+                column: 'name',
+                operator: 'LIKE',
+                values: `%${query}%`
+            }),
+            new DatabaseQueryCondition({
+                column: 'artist',
+                operator: 'LIKE',
+                values: `%${query}%`
+            }),
+        ], "OR")
+    ]);
 
     res.send(data);
 });
