@@ -43,9 +43,10 @@
 
                 </b-form-group>
             </b-col>
-            <b-col md="6">
 
-                <b-button size="sm" variant="success" class="float-right">
+
+            <b-col md="6" v-if="!search">
+                <b-button size="sm" variant="success" class="float-right" @click="toggleSearch">
                     Add Album <i class="fa fa-plus"></i>
                 </b-button>
 
@@ -53,10 +54,44 @@
 
                 <b-row class="clear">
                     <b-col cols="6" class="mt-4" v-for="a in item.albums" :key="a.id">
-                        <album-cover :value="a"></album-cover>
+                        <album-cover :value="a" icon="">
+                            <template slot="actions">
+                                <b-button size="sm" variant="danger" @click="removeAlbum(a)">
+                                    <i class="fa fa-minus"></i>
+                                </b-button>
+                            </template>
+                        </album-cover>
                     </b-col>
                 </b-row>
             </b-col>
+
+
+            <b-col md="6" v-if="search">
+                <b-button size="sm" variant="warning" class="float-right" @click="toggleSearch">
+                    <i class="fa fa-chevron-left"></i> Back
+                </b-button>
+
+                <b>Album Search:</b>
+
+                <b-input-group class="my-4">
+                    <b-form-input size="sm" type="text" placeholder="Search"
+                                  v-model="searchQuery" @keyup.native.enter="doSearch"/>
+                    <b-input-group-append>
+                        <b-button size="sm" variant="secondary" @click="doSearch">
+                            <i class="fa fa-search"></i>
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+
+
+                <b-row class="clear">
+                    <b-col cols="6" class="mt-4" v-for="a in searchResults" :key="a.id" v-if="!hasAlbum(a.id)">
+                        <album-cover :value="a" icon="plus" @action="addAlbum(a)"></album-cover>
+                    </b-col>
+                </b-row>
+            </b-col>
+
+
         </b-row>
 
         <b-row>
@@ -77,6 +112,7 @@
 
     import api from '~/plugins/api';
     import Collection from "Shared/entities/Collection";
+    import Album from "Shared/entities/Album";
 
     export default {
         head() {
@@ -85,7 +121,10 @@
             };
         },
         data: () => ({
-            item: null
+            item: null,
+            search: false,
+            searchQuery: '',
+            searchResults: []
         }),
         async asyncData({params}) {
             if (!params.id) {
@@ -117,6 +156,32 @@
                     this.item.tempImage = fu.response.data;
                 }
             },
+
+            hasAlbum(id) {
+                return !!this.item.albums.find(a => a.id === id);
+            },
+
+            removeAlbum(a) {
+                this.item.albums.remove(a);
+            },
+
+            addAlbum(a) {
+                this.item.albums.push(a);
+            },
+
+
+            toggleSearch() {
+                this.search = !this.search;
+            },
+            async doSearch() {
+                let {data} = await api.get(`/album/search`, {
+                    params: {
+                        q: this.searchQuery
+                    }
+                });
+
+                this.searchResults = data.map(x => new Album(x));
+            }
         },
         components: {
             SimpleCover,

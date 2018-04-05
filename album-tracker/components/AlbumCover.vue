@@ -29,9 +29,7 @@
         },
         methods: {
             mainAction() {
-                if (this.$listeners['action']) {
-                    this.$listeners['action']();
-                } else {
+                if (!this.$listeners['action']) {
                     const {value} = this;
                     this.$router.push(`/album/${value.id}`);
                 }

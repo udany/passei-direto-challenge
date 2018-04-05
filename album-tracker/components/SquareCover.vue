@@ -1,5 +1,5 @@
 <template>
-    <square class="square-cover">
+    <square class="square-cover" :class="{'no-action': !icon, 'has-action': !!icon}">
         <div class="bck" :style="{backgroundImage: 'url('+image+')'}"></div>
         <div class="bck blur" :style="{backgroundImage: 'url('+image+')'}"></div>
 
@@ -42,7 +42,7 @@
         },
         methods: {
             mainAction() {
-                this.$emit('action');
+                if (this.icon) this.$emit('action');
             }
         },
         components: {
@@ -74,17 +74,17 @@
         transition: all .5s;
     }
 
-    .square-cover:hover .bck {
+    .square-cover.has-action:hover .bck {
         opacity: 0;
     }
 
-    .square-cover .bck.blur {
+    .square-cover.has-action .bck.blur {
         transform: scale(1);
         filter: blur(5px);
         opacity: 0;
     }
 
-    .square-cover:hover .bck.blur {
+    .square-cover.has-action:hover .bck.blur {
         transform: scale(1.1);
         opacity: 1;
     }
@@ -153,5 +153,9 @@
     .square-cover:hover .actions {
         opacity: 1;
         transform: translateY(0);
+    }
+    
+    .square-cover.no-action {
+        cursor: default;
     }
 </style>
