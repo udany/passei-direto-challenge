@@ -1,6 +1,8 @@
 import {DatabaseField, DatabaseFieldBoolean, DatabaseModel} from "../js/DatabaseEntity";
 import Album from "../../shared/entities/Album";
 import DynamicFile from "../js/DynamicFile";
+import {DatabaseRelationshipOneToMany} from "../js/DatabaseRelationship";
+import AlbumTrackModel from "./AlbumTrackModel";
 
 class AlbumModel extends DatabaseModel {
     /**
@@ -40,6 +42,7 @@ AlbumModel
     .config({
         table: 'album',
         entity: Album,
+
         fields: [
             new DatabaseField({name: 'id', type: 'int', length: 11})
                 .setAutoIncrement(true).setPrimaryKey(true),
@@ -66,6 +69,15 @@ AlbumModel
 
             new DatabaseField({name: 'imageSeed', type: 'int', length: 11})
                 .setDefault(0),
+        ],
+
+        relationships: [
+            (new DatabaseRelationshipOneToMany({
+                model: AlbumModel,
+                externalModel: AlbumTrackModel,
+                property: 'albums',
+                externalForeignKey: 'albumId'
+            })).autoload(true).readonly(false)
         ]
     });
 

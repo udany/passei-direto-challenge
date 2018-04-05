@@ -97,6 +97,14 @@ export class DatabaseModel {
         return rows.map(r => new this.entity(r));
     }
 
+    static async loadRelationships(db, obj, relationships = null) {
+        if (!relationships) relationships = this.relationships.filter(r => r.autoload());
+
+        for (const relationship of relationships) {
+            await relationship.select(db, obj);
+        }
+    }
+
     static async getById(db, id) {
         if (!Array.isArray(id)) id = [id];
 
