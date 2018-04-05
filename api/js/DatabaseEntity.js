@@ -2,8 +2,9 @@ import {setOrReturnKey} from '../../shared/base/General';
 import {DatabaseQueryClause, DatabaseQueryComponent, DatabaseQueryCondition} from "./DatabaseQueryComponent";
 
 export function dbBacktick(val) {
-    return`\`${val}\``;
+    return `\`${val}\``;
 }
+
 const _e = dbBacktick;
 
 
@@ -12,7 +13,8 @@ export class DatabaseModel {
     static config({
         table,
         entity,
-        fields = []
+        fields = [],
+        relationships = []
     }) {
         this.table = table;
         this.entity = entity;
@@ -20,12 +22,14 @@ export class DatabaseModel {
         /** @type {DatabaseField[]} */
         this.fields = fields;
 
+        this.relationships = relationships;
+
         this._insertWithId = false;
 
         return this;
     }
 
-    static insertWithId(v){
+    static insertWithId(v) {
         return this._setOrReturnKey('_insertWithId', v);
     }
 
@@ -67,10 +71,11 @@ export class DatabaseModel {
      * Queries the database for entries
      * @param db
      * @param {DatabaseQueryComponent[]|Object[]} filters
+     * @param {String} order
      * @param {String[]} fieldNames
      * @returns {Entity[]}
      */
-    static async select(db, filters = [], fieldNames = []) {
+    static async select(db, filters = [], order = '', fieldNames = []) {
         if (!filters.length) {
             filters.push(new DatabaseQueryCondition({
                 values: 1,
@@ -84,7 +89,7 @@ export class DatabaseModel {
 
         const where = new DatabaseQueryClause(filters, "AND");
 
-        const query = this.getSelectQuery(where, fieldNames);
+        const query = this.getSelectQuery(where, fieldNames, order);
         const params = where.getParams();
 
         let [rows] = await db.query(query, params);
@@ -146,7 +151,7 @@ export class DatabaseModel {
      * @param {String[]} fieldNames
      * @returns {string}
      */
-    static getSelectQuery(where = null, fieldNames = []) {
+    static getSelectQuery(where = null, fieldNames = [], order = '') {
         const fields = this.fields.filter(f => !fieldNames.length || fieldNames.indexOf(f.name) >= 0);
 
         const columns = fields.map(f => _e(f.name));
@@ -160,7 +165,12 @@ export class DatabaseModel {
             });
         }
 
-        return `SELECT ${columns.join(', ')} FROM ${_e(this.table)} WHERE ${where.getClause()}`;
+        if (order) {
+            order = order.replace('ORDER BY ', '');
+            order = 'ORDER BY '+order;
+        }
+
+        return `SELECT ${columns.join(', ')} FROM ${_e(this.table)} WHERE ${where.getClause()} ${order}`;
     }
 
     static getInsertQuery(data) {
@@ -179,7 +189,7 @@ export class DatabaseModel {
         for (let key in data) {
             if (data.hasOwnProperty(key)) {
                 keys.push(_e(key));
-                values.push(':'+key);
+                values.push(':' + key);
             }
         }
 
@@ -226,7 +236,7 @@ export class DatabaseModel {
     static getCreateStatement() {
         let lines = [];
 
-        for(let field of this.fields) {
+        for (let field of this.fields) {
             let line = `    ${_e(field.column)} ${field.getTypeString()} ${field.nullable ? 'NULL' : 'NOT NULL'}`;
 
             if (field.defaultValue !== null) line += ` DEFAULT ${field.getDefaultValue()}`;
@@ -247,6 +257,7 @@ export class DatabaseModel {
         return this.fields.filter(f => f.primaryKey);
     }
 }
+
 DatabaseModel._setOrReturnKey = setOrReturnKey;
 
 
@@ -272,28 +283,35 @@ export class DatabaseField {
         this.column = this.column ? this.column : this.name;
     }
 
-    setType(v){
+    setType(v) {
         return this._setOrReturnKey('type', v);
     }
-    setPrimaryKey(v){
+
+    setPrimaryKey(v) {
         return this._setOrReturnKey('primaryKey', v);
     }
-    setUnsigned(v){
+
+    setUnsigned(v) {
         return this._setOrReturnKey('unsigned', v);
     }
-    setNullable(v){
+
+    setNullable(v) {
         return this._setOrReturnKey('nullable', v);
     }
-    setLength(v){
+
+    setLength(v) {
         return this._setOrReturnKey('length', v);
     }
-    setDefault(v){
+
+    setDefault(v) {
         return this._setOrReturnKey('defaultValue', v);
     }
-    setAutoIncrement(v){
+
+    setAutoIncrement(v) {
         return this._setOrReturnKey('autoIncrement', v);
     }
-    setUnique(v){
+
+    setUnique(v) {
         return this._setOrReturnKey('unique', v);
     }
 
@@ -305,17 +323,18 @@ export class DatabaseField {
         o[this.name] = val;
     }
 
-    get(o) {
+    get (o) {
         return this.getFunction ? this.getFunction(o) : this.baseGet(o);
     }
 
-    set(o, val) {
+    set (o, val) {
         return this.setFunction ? this.setFunction(o, val) : this.baseSet(o, val);
     }
 
     getTypeString() {
         return this.type + (this.length ? `(${this.length})` : '') + (this.unsigned ? ' unsigned' : '')
     }
+
     getDefaultValue() {
         if (typeof this.defaultValue === 'string') {
             return `"${this.defaultValue}"`;
@@ -334,4 +353,5 @@ export class DatabaseFieldBoolean extends DatabaseField {
         o[this.name] = !!val;
     }
 }
+
 DatabaseField.prototype._setOrReturnKey = setOrReturnKey;
