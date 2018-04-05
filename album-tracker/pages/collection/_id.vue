@@ -23,7 +23,7 @@
 
 
                             <a href="#" class="color-neutral" @click.prevent="edit">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-pencil"></i>&nbsp;
                                 Edit
                             </a>
 
@@ -42,17 +42,8 @@
 
         <div class="container mt-4">
             <b-row>
-                <b-col md="3" cols="6" class="mt-4">
-                    <album-cover :id="0" title="Appetite for Destruction" artist="Guns 'n Roses"></album-cover>
-                </b-col>
-                <b-col md="3" cols="6" class="mt-4">
-                    <album-cover :id="1" title="Back to Black" artist="Amy Winehouse"></album-cover>
-                </b-col>
-                <b-col md="3" cols="6" class="mt-4">
-                    <album-cover :id="2" title="The Dark Knight OST" artist="Hans Zimmer"></album-cover>
-                </b-col>
-                <b-col md="3" cols="6" class="mt-4">
-                    <album-cover :id="3" title="Jinsei × Boku" artist="ONE OK ROCK"></album-cover>
+                <b-col md="3" cols="6" class="mt-4" v-for="a in item.albums" :key="a.id">
+                    <album-cover :value="a"></album-cover>
                 </b-col>
             </b-row>
         </div>
@@ -78,8 +69,14 @@
         async asyncData({params}) {
             let {data} = await api.get(`/collection/${params.id}`);
 
-            return {item: new Collection(data)}
+            return {item: data}
         },
+
+        components: {
+            SimpleCover,
+            AlbumCover
+        },
+
         methods: {
             back() {
                 this.$router.go(-1);
@@ -99,12 +96,8 @@
                 }
             }
         },
-        components: {
-            SimpleCover,
-            AlbumCover
-        },
         created() {
-            if (this.item && !(this.item instanceof Collection)) {
+            if (this.item) {
                 this.item = new Collection(this.item);
             }
         }
