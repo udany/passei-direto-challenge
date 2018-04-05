@@ -7,11 +7,11 @@ import AlbumTrack from "./AlbumTrack";
  * @property {string} name
  * @property {string} artist
  * @property {number} releaseYear
- * @property {number} popularity
  *
  * @property {string} spotifyId
  *
  * @property {string} tempImage
+ * @property {string} spotifyImage
  * @property {boolean} hasImage
  * @property {number} imageSeed
  */
@@ -25,6 +25,8 @@ export class Album extends Entity {
             return `http://localhost:3001/data/temp/${this.tempImage}`;
         } else if(this.hasImage) {
             return `http://localhost:3001/data/album/${this.id}_${this.imageSeed}`;
+        } else if(this.spotifyImage) {
+            return this.spotifyImage;
         } else {
             return '';
         }
@@ -37,7 +39,6 @@ Album.Attributes = [
     new Entity.Attributes.String('name'),
     new Entity.Attributes.String('artist'),
     new Entity.Attributes.Integer('releaseYear'),
-    new Entity.Attributes.Integer('popularity'),
 
     new Entity.Attributes.EntityList('tracks', AlbumTrack),
 
@@ -45,6 +46,7 @@ Album.Attributes = [
 
     // Cover
     new Entity.Attributes.String('tempImage'),
+    new Entity.Attributes.String('spotifyImage'),
     new Entity.Attributes.Boolean('hasImage'),
     new Entity.Attributes.Integer('imageSeed')
 ];

@@ -56,9 +56,6 @@ AlbumModel
             new DatabaseField({name: 'releaseYear', type: 'smallint', length: 4})
                 .setDefault(0),
 
-            new DatabaseField({name: 'popularity', type: 'tinyint', length: 3})
-                .setDefault(0),
-
 
             new DatabaseField({name: 'spotifyId', type: 'varchar', length: 22})
                 .setDefault(''),

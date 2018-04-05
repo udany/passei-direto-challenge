@@ -80,12 +80,22 @@
                         <b-button size="sm" variant="secondary" @click="doSearch">
                             <i class="fa fa-search"></i>
                         </b-button>
+                        <b-button size="sm" variant="success" @click="spotifySearch">
+                            <i class="fa fa-spotify"></i>
+                        </b-button>
                     </b-input-group-append>
                 </b-input-group>
 
 
                 <b-row class="clear">
                     <b-col cols="6" class="mt-4" v-for="a in searchResults" :key="a.id" v-if="!hasAlbum(a.id)">
+                        <album-cover :value="a" icon="plus" @action="addAlbum(a)"></album-cover>
+                    </b-col>
+                </b-row>
+
+
+                <b-row class="clear" v-if="spotifyResults.length">
+                    <b-col cols="6" class="mt-4" v-for="a in spotifyResults" :key="a.GetUId()">
                         <album-cover :value="a" icon="plus" @action="addAlbum(a)"></album-cover>
                     </b-col>
                 </b-row>
@@ -124,7 +134,8 @@
             item: null,
             search: false,
             searchQuery: '',
-            searchResults: []
+            searchResults: [],
+            spotifyResults: []
         }),
         async asyncData({params}) {
             if (!params.id) {
@@ -167,12 +178,17 @@
 
             addAlbum(a) {
                 this.item.albums.push(a);
+
+                this.$toast.success('Album added!', {duration: 1000});
+
+                this.toggleSearch();
             },
 
 
             toggleSearch() {
                 this.search = !this.search;
             },
+
             async doSearch() {
                 let {data} = await api.get(`/album/search`, {
                     params: {
@@ -181,6 +197,18 @@
                 });
 
                 this.searchResults = data.map(x => new Album(x));
+            },
+
+            async spotifySearch() {
+                this.$toast.info('Searching Spotify...', {duration: 3000});
+
+                let {data} = await api.get(`/spotify/search`, {
+                    params: {
+                        q: this.searchQuery
+                    }
+                });
+
+                this.spotifyResults = data.map(x => new Album(x));
             }
         },
         components: {
