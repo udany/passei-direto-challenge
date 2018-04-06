@@ -79,7 +79,6 @@ class MusicFile extends SoundFile {
     }
 
     async play() {
-        debugger;
         await this.load();
 
         this.audio.play();
