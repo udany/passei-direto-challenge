@@ -1,6 +1,7 @@
 # Album Tracker
 Simple Nuxt.js / Express app for demonstration purposes.
 
+![](cover.png "")
 
 ## Ho do I run it?
 
