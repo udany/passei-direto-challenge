@@ -1,4 +1,5 @@
 import Entity from '../base/Entity';
+import MusicFile from "../util/MusicFile";
 
 /**
  * @name AlbumTrack
@@ -11,14 +12,32 @@ import Entity from '../base/Entity';
  *
  * @property {string} spotifyId
  * @property {string} previewUrl
+ *
+ * @property {MusicFile} sound
  */
 export class AlbumTrack extends Entity {
+    constructor(...args) {
+        super(...args);
+
+        if (this.previewUrl) {
+            this.getSound();
+        }
+    }
+
     getDurationString() {
         let sec = Math.floor(this.duration/1000);
         let min = Math.floor(sec/60);
         sec = sec % 60;
 
         return `${min}:${sec.pad(2)}`;
+    }
+
+    getSound() {
+        if (!this.sound) {
+            this.sound = new MusicFile(this.previewUrl);
+        }
+
+        return this.sound;
     }
 }
 

@@ -61,8 +61,15 @@
                                 {{t.number}}
                             </td>
                             <td class="text-sm">
-                                <a :href="t.previewUrl" target="_blank" v-if="t.previewUrl" class="color-neutral">
-                                    <i class="fa fa-play mt-1"></i>
+                                <a href="#" class="color-neutral" @click.prevent="t.sound.toggle"
+                                   v-if="t.sound">
+                                    <i class="fa fa-play mt-1"
+                                       :class="{
+                                       'fa-spin': t.sound.isLoading(),
+                                       'fa-spinner': t.sound.isLoading(),
+                                       'fa-play': t.sound.isStopped(),
+                                       'fa-stop': t.sound.isPlaying()
+                                       }"></i>
                                 </a>
                             </td>
                             <td>
